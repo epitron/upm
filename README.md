@@ -68,6 +68,8 @@ python:<pkg> (or py: p: pip:)
 * go: go-get
 * Java: ?
 
+...[and many more!](https://en.wikipedia.org/wiki/List_of_software_package_management_systems)
+
 
 ## TODOs:
 
