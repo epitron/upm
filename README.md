@@ -1,9 +1,11 @@
-# up: The Universal Package manager
+# upm: Universal Package Manager
 
 ## Usage:
 
 ```
+upm <command> <pkg>
 up <command> <pkg>
+u <command> <pkg>
 ```
 
 ## Commands
