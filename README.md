@@ -2,9 +2,9 @@
 
 ## Concept:
 
-Wraps all known package managers to provide a consistent and pretty interface, along with advanced features not supported by all tools, such as like rollback and pinning.
+Wraps all known package managers to provide a consistent and pretty interface, along with advanced features not supported by all tools, such as rollback and pinning.
 
-You'll get the same colorized and piped-to-less result set for every package tool, and you'll only have to remember one set of commands.
+All tools will give you modern, pretty, colourful, piped-to-less output, and you'll only have to remember one set of nice commands. It'll also prompt you with a nice text UI whenever it's faced with ambiguity.
 
 ## Usage:
 
@@ -35,7 +35,7 @@ u <command> <pkg>
 * keys - keyrings and package authentication
 * default - configure the action to take when no arguments are passed to "upm" (defaults to "os:update")
 
-### Install, search, and remove can prefix the package name with a namespace:
+### Any command that takes a package name can be prefixed with the package tool's namespace:
 
 ```
 os:<pkg> -- automatically select the package manager for the current unix distribution
@@ -76,6 +76,6 @@ python:<pkg> (or py: p: pip:)
 
 ## TODOs:
 
-* Build using the pretty text-mode UI that passenger-install uses
+* Use the pretty text-mode UI that passenger-install uses
 * Context-dependent operation
-  * if you're in a ruby project, prioritize the 'ruby' namespace
+  * if you're in a ruby project's directory, set the 'ruby' namespace to highest priority
