@@ -1,5 +1,9 @@
 # upm: Universal Package Manager
 
+## Concept:
+
+Wraps all known package managers to provide a consistent and pretty interface, along with advanced features not supported by all tools, such as like rollback and pinning.
+
 ## Usage:
 
 ```
@@ -8,7 +12,7 @@ up <command> <pkg>
 u <command> <pkg>
 ```
 
-## Commands
+## Commands:
 
 * list
 * search
@@ -28,15 +32,15 @@ u <command> <pkg>
 * keys - keyrings and package authentication
 * default - configurable default action (defaults to update only the OS)
 
-### All searches and package names can be prefixed with their namespace:
+### Install, search, and remove can prefix the package name with a namespace:
 
 ```
-ruby:<pkg> (or r:)
-deb:<pkg> (or d:)
-rpm:<pkg>
-python:<pkg>
-py:<pkg>
-pip:<pkg>
+os:<pkg> -- automatically select the package manager for the current unix distribution
+deb:<pkg> (or d: u:)
+rpm:<pkg> (or yum: y:)
+bsd:<pkg> (or b:)
+ruby:<pkg> (or r: gem:)
+python:<pkg> (or py: p: pip:)
 ```
 
 ### ...or suffixed with its file extension:
