@@ -16,20 +16,21 @@ u <command> <pkg>
 
 ## Commands:
 
-* list
-* search
 * install
-* sync/update
-* upgrade
+* remove
+* build - compile a package from source and install it
+* search - using the fastest known API or service
+* list - show all packages, or the contents of a specific package
+* info - show metadata about a package
+* sync/update - retrieve the latest package list or manifest
+* upgrade - install new versions of all packages
+* pin - pinning a package means it won't be automatically upgraded
+* rollback - revert to an earlier version of a package (including its dependencies)
 * log - show history of package installs 
-* pin
-* rollback
-* packagers - detect package systems, and enable/disable them
+* packagers - detect installed package managers, and pick which ones upm should wrap
 * sources/mirrors - select remote repositories and mirrors
 * verfiy - verifies integrity of installed packages
-* remove
-* clean
-* build
+* clean - clear out the local package cache
 * monitor - ad-hoc package manager for custom installations (like instmon)
 * keys - keyrings and package authentication
 * default - configure the action to take when no arguments are passed to "upm" (defaults to "os:update")
