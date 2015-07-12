@@ -4,6 +4,8 @@
 
 Wraps all known package managers to provide a consistent and pretty interface, along with advanced features not supported by all tools, such as like rollback and pinning.
 
+You'll get the same colorized and piped-to-less result set for every package tool, and you'll only have to remember one set of commands.
+
 ## Usage:
 
 ```
@@ -30,7 +32,7 @@ u <command> <pkg>
 * build
 * monitor - ad-hoc package manager for custom installations (like instmon)
 * keys - keyrings and package authentication
-* default - configurable default action (defaults to update only the OS)
+* default - configure the action to take when no arguments are passed to "upm" (defaults to "os:update")
 
 ### Install, search, and remove can prefix the package name with a namespace:
 
