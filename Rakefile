@@ -9,7 +9,7 @@ task :release => :build do
   system "gem push #{pkgname}-#{gem_version}.gem"
 end
 
-task :gem => :release
+task :gem => :build
 
 task :install => :build do
   system "gem install #{pkgname}-#{gem_version}.gem"

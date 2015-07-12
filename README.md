@@ -48,7 +48,7 @@ pip:<pkg>
 <pkg>.pip
 ```
 
-## Supported packagers:
+## Package tools to wrap:
 
 * OpenBSD: pkg_add
 * FreeBSD: pkg
