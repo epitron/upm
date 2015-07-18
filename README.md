@@ -64,6 +64,7 @@ python:<pkg> (or py: p: pip:)
 * FreeBSD: `pkg`/`ports`
 * OpenBSD: `pkg_add`/`ports`
 * NetBSD: `pkgin`/`ports`
+* SmartOS/Illumos: `pkgin`
 * Windows: `apt-cyg`/`mingw-get`/`nuget`/`Windows Update`/(as-yet-not-created package manager, "winget")
 * Wine: `winetricks`
 * Ruby: `rubygems`
