@@ -60,11 +60,12 @@ python:<pkg> (or py: p: pip:)
 * Arch: `pacman`/`aur`/`abs` (svn mirror)
 * Debian/Ubuntu: `apt-get`/`dpkg` (+ curated list of ppa's)
 * RedHat/Fedora/Centos: `yum`/`rpm`
-* FreeBSD: `pkg`
-* OpenBSD: `pkg_add`
+* Mac OSX: `brew`/`fink`/`ports`
+* FreeBSD: `pkg`/`ports`
+* OpenBSD: `pkg_add`/`ports`
+* NetBSD: `pkgin`/`ports`
 * Windows: `apt-cyg`/`mingw-get`/`nuget`/`Windows Update`/(as-yet-not-created package manager, "winget")
 * Wine: `winetricks`
-* Mac OSX: `brew`/`fink`
 * Ruby: `rubygems`
 * Python: `pip`/`easy_install`
 * Javascript: `npm`
