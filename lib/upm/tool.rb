@@ -82,6 +82,8 @@ module UPM
       if tool.nil?
         puts "Error: couldn't find a package manager."
       end
+
+      tool
     end
 
     ###################################################################
