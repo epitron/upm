@@ -9,6 +9,19 @@ Currently missing:
 * OpenBSD
 * SuSE
 
+## Dependency-fetching features
+
+* Use upm to fetch dependencies for any library or script, across any language.
+* Some kind of manifest file (or personifest, to be politically correct)
+* This is a little like bundler, npm, etc., but for any type of package.
+
+## Ability to install any package from any OS to the user's home directory
+
+Slurps up the packages and their dependencies, then unpacks them into ~/.upm/{bin,lib} or something.
+(Like nix?)
+
+Related tool: intoli/exodus
+
 ## fzf
 
 Use fzf for "list" output (or other commands that require selecting, like "remove")
@@ -43,6 +56,22 @@ spawn(*%w[tr a-z A-Z], in: r)
 * Help screen needs to display language-specific package managers
 * `upm help --ruby` should show available ruby commands
 
+## Give identical output on every platform
+
+* Requires parsing the output of every command into a canonical format, or reading the package databases directly.
+
+## apt: Integrate 'acs' wrapper script
+
+## Evaluate UPM::Tool.new block in an instance of an anonymous subclass of UPM::Tool
+
+This will allow tools to create classes and modules inside the UPM::Tool block without namespace collisions
+
+## Themes?
+
+Why not!
+
 ## Mirror Selector
 
-* Do a ping test on available mirrors, and use fzf to select
+Do a ping test on available mirrors, and use fzf to select.
+
+
