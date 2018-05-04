@@ -9,6 +9,10 @@ Currently missing:
 * OpenBSD
 * SuSE
 
+## fzf
+
+Use fzf for "list" output (or other commands that require selecting, like "remove")
+
 ## Proper ARGV parser
 
 * Something better than "command, *args = ARGV" (with "--help" available, at the very least.)
