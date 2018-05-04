@@ -10,7 +10,7 @@ task :build do
 end
  
 task :release => :build do
-  system "gem push #{gemfile}"
+  system "gem push pkg/#{gemfile}"
 end
 
 task :gem => :build
