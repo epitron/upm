@@ -4,7 +4,12 @@ UPM::Tool.new "apt" do
 
   command "install",  "apt install", root: true
   command "update",   "apt update",  root: true
-  command "upgrade",  "apt upgrade", root: true
+  
+  command "upgrade" do |args|
+    call_command("update")
+    run("apt", "upgrade", root: true
+  end
+
   command "remove",   "apt remove",  root: true
 
   command "files",  "dpkg-query -L", paged: true
