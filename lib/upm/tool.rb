@@ -56,6 +56,7 @@ module UPM
     # default - configure the action to take when no arguments are passed to "upm" (defaults to "os:update")
     
     ALIASES = {
+      "file"    => "files",
       "sync"    => "update",
       "sources" => "mirrors",
       "show"    => "info",
@@ -102,7 +103,7 @@ module UPM
       @prefix = name
     end
 
-    def command(name, shell_command=nil, root: false, &block)
+    def command(name, shell_command=nil, root: false, paged: false, &block)
       @cmds ||= {}
 
       if block_given?
@@ -116,7 +117,7 @@ module UPM
 
         shell_command.unshift "sudo" if root
 
-        @cmds[name] = proc { |args| system(*shell_command, *args) }
+        @cmds[name] = proc { |args| run(*shell_command, *args, paged: paged) }
       end
     end
 
@@ -126,8 +127,32 @@ module UPM
 
     ## Helpers
 
-    def run(*args)
-      system(*args)
+    def run(*args, paged: false, grep: nil)
+      if !paged and !grep
+        system(*args)
+      else
+
+        IO.popen(args, err: [:child, :out]) do |command_io|
+          
+          if grep
+            grep_io = IO.popen(["grep", "--color=always", "-Ei", grep.source], "w+")
+            IO.copy_stream(command_io, grep_io)
+            grep_io.close_write
+            command_io = grep_io
+          end
+
+          if paged
+            lesspipe do |less|
+              IO.copy_stream(command_io, less)
+            end
+          else
+            IO.copy_stream(command_io, STDOUT)
+          end
+
+        end
+
+        $?.to_i == 0
+      end
     end
 
   end

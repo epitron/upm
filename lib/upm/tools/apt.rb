@@ -6,9 +6,9 @@ UPM::Tool.new "apt" do
   command "update",   "apt update",  root: true
   command "upgrade",  "apt upgrade", root: true
 
-  command "files",  "dpkg-query -L"
-  command "search", "apt search"
-  command "info", "apt show"
+  command "files",  "dpkg-query -L", paged: true
+  command "search", "apt search", paged: true
+  command "info", "apt show", paged: true
   command "list" do |args|
     if args.any?
       run("dpkg-query", "-L", *args)
