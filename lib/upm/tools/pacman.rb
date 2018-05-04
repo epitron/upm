@@ -7,24 +7,19 @@ UPM::Tool.new "pacman" do
   command "install", [*bin, "-S"], root: true
   command "update", [*bin, "-Sy"], root: true
   command "upgrade", [*bin, "-Syu"], root: true
-
-  command "files" do |args|
-    if args.any?
-      query = /#{args.join}/
-      run(*bin, "-Ql", paged: true, grep: query)
-    else
-      run(*bin, "-Ql", paged: true)
-    end
-  end
-
+  command "files", [*bin, "-Ql"], paged: true
   command "search", [*bin, "-Ss"], paged: true
   command "info" do |args|
     run(*bin, "-Qi", *args) || run(*bin, "-Si", *args)
   end
 
   command "list" do |args|
-    opt = args.any? ? "-Ql" : "-Q"
-    run(*bin, opt, *args, paged: true)
+    if args.any?
+      query = args.join
+      run(*bin, "-Q", grep: query, paged: true)
+    else
+      run(*bin, "-Q", paged: true)
+    end
   end
 
   command "mirrors" do

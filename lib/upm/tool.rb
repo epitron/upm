@@ -135,7 +135,8 @@ module UPM
         IO.popen(args, err: [:child, :out]) do |command_io|
           
           if grep
-            grep_io = IO.popen(["grep", "--color=always", "-Ei", grep.source], "w+")
+            pattern = grep.is_a?(Regexp) ? grep.source : grep.to_s 
+            grep_io = IO.popen(["grep", "--color=always", "-Ei", pattern], "w+")
             IO.copy_stream(command_io, grep_io)
             grep_io.close_write
             command_io = grep_io
@@ -155,6 +156,7 @@ module UPM
       end
     end
 
-  end
-end
+  end # class Tool
+
+end # module UPM
 

@@ -9,14 +9,16 @@ UPM::Tool.new "apt" do
   command "files",  "dpkg-query -L", paged: true
   command "search", "apt search", paged: true
   command "info", "apt show", paged: true
+
   command "list" do |args|
     if args.any?
-      run("dpkg-query", "-L", *args)
+      query = args.join
+      run("dpkg", "-l", grep: query, paged: true)
     else
-      run("dpkg-query", "-l")
+      run("dpkg", "-l", paged: true)
     end
   end
-
+  
   command "mirrors" do
     print_files("/etc/apt/sources.list", *Dir["/etc/apt/sources.list.d/*"], exclude: /^(#|$)/)
   end
