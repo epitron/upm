@@ -5,7 +5,7 @@ gemfile = "#{pkgname}-#{gem_version}.gem"
 
 task :build do
   system "gem build .gemspec"
-  system "mkdir pkg/"
+  system "mkdir pkg/" unless File.directory? "pkg"
   system "mv #{gemfile} pkg/"
 end
  
