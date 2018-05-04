@@ -9,6 +9,10 @@ Currently missing:
 * OpenBSD
 * SuSE
 
+## Abbrev cmds
+
+* eg: upm install => upm i => u i
+
 ## Dependency-fetching features
 
 * Use upm to fetch dependencies for any library or script, across any language.
