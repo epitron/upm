@@ -17,7 +17,7 @@ module UPM
       "search"           => "using the fastest known API or service",
       "list"             => "list installed packages (or search their names if extra arguments are supplied)",
       "info"             => "show metadata about a package",
-      "sync/update"      => "retrieve the latest package list or manifest",
+      "update/sync"      => "retrieve the latest package list or manifest",
       "upgrade"          => "install new versions of all packages",
       "pin"              => "pinning a package means it won't be automatically upgraded",
       "rollback"         => "revert to an earlier version of a package (including its dependencies)",
