@@ -21,6 +21,12 @@ Use fzf for "list" output (or other commands that require selecting, like "remov
 
 * Make the `run` command able to grep the output while streaming the results to the screen.
 * Make run pretend to be a tty, so I don't need `--color=always`.
+* Use spawn, like so:
+  ```
+r,w = IO.pipe
+spawn(*%w[echo hello world], out: w)
+spawn(*%w[tr a-z A-Z], in: r)
+```
 
 ## Figure out how to integrate language package managers
 
