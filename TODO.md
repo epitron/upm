@@ -32,3 +32,7 @@ Use fzf for "list" output (or other commands that require selecting, like "remov
 * Add detectors for language-specific package-managers
 * Help screen needs to display language-specific package managers
 * `upm help --ruby` should show available ruby commands
+
+## Mirror Selector
+
+* Do a ping test on available mirrors, and use fzf to select
