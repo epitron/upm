@@ -43,7 +43,7 @@ deb:<pkg> (or d: u:)
 rpm:<pkg> (or yum: y:)
 bsd:<pkg> (or b:)
 ruby:<pkg> (or r: gem:)
-python:<pkg> (or py: p: pip:)
+python:<pkg>,<pkg> (or py: p: pip:)
 ```
 
 ### ...or suffixed with its file extension:

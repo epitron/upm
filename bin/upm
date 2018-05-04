@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby
+bin_dir = File.dirname(File.realpath(__FILE__))
+$LOAD_PATH.unshift(File.expand_path(File.join('..', 'lib'), bin_dir))
+
+require 'upm'
+
+tool = UPM::Tool.for_os
+command, *args = ARGV
+
+if command.nil?
+  tool.help
+else
+  tool.call_command command, args
+end
