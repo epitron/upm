@@ -7,7 +7,7 @@ UPM::Tool.new "apt" do
   
   command "upgrade" do |args|
     call_command("update")
-    run("apt", "upgrade", root: true
+    run("apt", "upgrade", root: true)
   end
 
   command "remove",   "apt remove",  root: true
