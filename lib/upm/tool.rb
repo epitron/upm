@@ -148,7 +148,7 @@ module UPM
           raise "Error: command argument must be a String or an Array; it was a #{cmd.class}"
         end
 
-        @cmds[name] = proc { |args| run(*shell_command, *args, paged: paged) }
+        @cmds[name] = proc { |args| run(*shell_command, *args, paged: paged, root: root) }
       end
     end
 
@@ -159,7 +159,9 @@ module UPM
     ## Helpers
 
     def run(*args, root: false, paged: false, grep: nil)
-      args.unshift "sudo" if root
+      if root and File.which("sudo") 
+        args.unshift "sudo" 
+      end
 
       if !paged and !grep
         system(*args)

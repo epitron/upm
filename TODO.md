@@ -84,3 +84,7 @@ Do a ping test on available mirrors, and use fzf to select.
 ## Interrupt catcher
 
 Don't print backtrace when ^C is pressed.
+
+## Tests
+
+Create fake OS environments that you can chroot into and run upm to test it out.

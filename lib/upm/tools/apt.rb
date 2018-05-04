@@ -6,8 +6,11 @@ UPM::Tool.new "apt" do
   command "update",   "apt update",  root: true
   
   command "upgrade" do |args|
-    call_command("update")
-    run("apt", "upgrade", root: true)
+    if call_command("update")
+      run("apt", "upgrade", root: true)
+    else
+      puts "Error: couldn't 'apt update' package lists"
+    end
   end
 
   command "remove",   "apt remove",  root: true
