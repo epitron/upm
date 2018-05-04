@@ -29,6 +29,9 @@ Use fzf for "list" output (or other commands that require selecting, like "remov
 * Possibilites: 
     * upm install --ruby <pkg>
     * upm install ruby:<pkg>,<pkg>
+    * upm --ruby search <query>
+    * upm ruby:search <query>
+    * upm search os:<query>
 * Add detectors for language-specific package-managers
 * Help screen needs to display language-specific package managers
 * `upm help --ruby` should show available ruby commands
