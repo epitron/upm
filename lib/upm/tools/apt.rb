@@ -6,15 +6,19 @@ UPM::Tool.new "apt" do
   command "update",   "apt update",  root: true
   command "upgrade",  "apt upgrade", root: true
 
-  command "files",  "dpkg -L"
+  command "files",  "dpkg-query -L"
   command "search", "apt search"
   command "info", "apt show"
   command "list" do |args|
     if args.any?
-      run("dpkg", "-L", *args)
+      run("dpkg-query", "-L", *args)
     else
-      run("dpkg", "-l")
+      run("dpkg-query", "-l")
     end
+  end
+
+  command "mirrors" do
+    print_files("/etc/apt/sources.list", *Dir["/etc/apt/sources.list.d/*"], exclude: /^(#|$)/)
   end
 
   command "log" do

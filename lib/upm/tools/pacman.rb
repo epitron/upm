@@ -17,6 +17,10 @@ UPM::Tool.new "pacman" do
     run("pacman", opt, *args)
   end
 
+  command "mirrors" do
+    print_files("/etc/pacman.d/mirrorlist", exclude: /^(#|$)/)
+  end
+
   command "depends" do |args|
     packages_that_depend_on = proc do |package|
       result = []

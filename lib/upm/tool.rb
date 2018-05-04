@@ -58,6 +58,7 @@ module UPM
     ALIASES = {
       "sync"    => "update",
       "sources" => "mirrors",
+      "show"    => "info",
     }
 
     def initialize(name, &block)
@@ -65,6 +66,34 @@ module UPM
       instance_eval(&block)
 
       @@tools[name] = self
+    end
+
+    def call_command(name, args)
+      if block = (@cmds[name] || @cmds[ALIASES[name]])
+        block.call args
+      else
+        puts "Command #{name} not supported in #{@name}"
+      end
+    end
+
+    def help
+      puts "#{@name} supported commands:"
+      puts "   #{@cmds.keys.join(", ")}"
+    end
+
+    def print_files(*paths, include: nil, exclude: nil)
+      lesspipe do |less|
+        paths.each do |path|
+          less.puts "<8>=== <11>#{path} <8>========".colorize
+          open(path) do |io|
+            enum = io.each_line
+            enum = enum.grep(include) if include
+            enum = enum.reject { |line| line[exclude] } if exclude
+            enum.each { |line| less.puts line }
+          end
+          less.puts
+        end
+      end
     end
 
     ## DSL methods
@@ -79,7 +108,6 @@ module UPM
       if block_given?
         @cmds[name] = block
       elsif shell_command
-        
         if shell_command.is_a? String
           shell_command = shell_command.split
         elsif not shell_command.is_a? Array
@@ -100,19 +128,6 @@ module UPM
 
     def run(*args)
       system(*args)
-    end
-
-    def call_command(name, args)
-      if block = @cmds[name]
-        block.call args
-      else
-        puts "Command #{name} not supported in #{@name}"
-      end
-    end
-
-    def help
-      puts "#{@name} supported commands:"
-      puts "   #{@cmds.keys.join(", ")}"
     end
 
   end
