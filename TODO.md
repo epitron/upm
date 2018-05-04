@@ -26,3 +26,9 @@ Use fzf for "list" output (or other commands that require selecting, like "remov
 
 * The packages that you can get through gem/pip/luarocks/etc. are often duplicated in the OS-level package managers. Should there be a preference?
 * Should the search command show matches from all available package tools? (There could be a configure step where the user says which package managers should be included, and which have preference)
+* Possibilites: 
+    * upm install --ruby <pkg>
+    * upm install ruby:<pkg>,<pkg>
+* Add detectors for language-specific package-managers
+* Help screen needs to display language-specific package managers
+* `upm help --ruby` should show available ruby commands
