@@ -11,14 +11,14 @@ UPM::Tool.new "apt" do
   command "info", "apt show"
   command "list" do |args|
     if args.any?
-      run("dpkg", "-l", *args)
+      run("dpkg", "-L", *args)
     else
-      run("apt", "list")
+      run("dpkg", "-l")
     end
   end
 
   command "log" do
-    UPM::LogParser.new(DpkgEvent).display
+    UPM::LogParser.new(DpkgEvent, "/var/log/dpkg*").display
   end
 
   class DpkgEvent < Struct.new(:datestr, :date, :cmd, :name, :v1, :v2)
