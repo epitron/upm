@@ -10,6 +10,34 @@ module UPM
 
   class Tool
 
+    COMMAND_HELP = {
+      "install"          => "install a package",
+      "remove/uninstall" => "remove a package",
+      "build"            => "compile a package from source and install it",
+      "search"           => "using the fastest known API or service",
+      "list"             => "list installed packages (or search their names if extra arguments are supplied)",
+      "info"             => "show metadata about a package",
+      "sync/update"      => "retrieve the latest package list or manifest",
+      "upgrade"          => "install new versions of all packages",
+      "pin"              => "pinning a package means it won't be automatically upgraded",
+      "rollback"         => "revert to an earlier version of a package (including its dependencies)",
+      "log"              => "show history of package installs",
+      "packagers"        => "detect installed package managers, and pick which ones upm should wrap",
+      "mirrors/sources"  => "manage remote repositories and mirrors",
+      "verfiy"           => "verify the integrity of installed files",
+      "clean"            => "clear out the local package cache",
+      "monitor"          => "ad-hoc package manager for custom installations (like instmon)",
+      "keys"             => "keyrings and package authentication",
+      "default"          => "configure the action to take when no arguments are passed to 'upm' (defaults to 'os:update')",
+    }
+
+    ALIASES = {
+      "file"    => "files",
+      "sync"    => "update",
+      "sources" => "mirrors",
+      "show"    => "info",
+    }
+
     @@tools = {}
 
     def self.register_tools!
@@ -40,34 +68,6 @@ module UPM
     def self.tools
       @@tools
     end
-
-    COMMAND_HELP = {
-      "install"         => "install a package",
-      "remove"          => "remove a package",
-      "build"           => "compile a package from source and install it",
-      "search"          => "using the fastest known API or service",
-      "list"            => "list installed packages (or search their names if extra arguments are supplied)",
-      "info"            => "show metadata about a package",
-      "sync/update"     => "retrieve the latest package list or manifest",
-      "upgrade"         => "install new versions of all packages",
-      "pin"             => "pinning a package means it won't be automatically upgraded",
-      "rollback"        => "revert to an earlier version of a package (including its dependencies)",
-      "log"             => "show history of package installs",
-      "packagers"       => "detect installed package managers, and pick which ones upm should wrap",
-      "mirrors/sources" => "manage remote repositories and mirrors",
-      "verfiy"          => "verify the integrity of installed files",
-      "clean"           => "clear out the local package cache",
-      "monitor"         => "ad-hoc package manager for custom installations (like instmon)",
-      "keys"            => "keyrings and package authentication",
-      "default"         => "configure the action to take when no arguments are passed to 'upm' (defaults to 'os:update')",
-    }
-
-    ALIASES = {
-      "file"    => "files",
-      "sync"    => "update",
-      "sources" => "mirrors",
-      "show"    => "info",
-    }
 
     def initialize(name, &block)
       @name = name

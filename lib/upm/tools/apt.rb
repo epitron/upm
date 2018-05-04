@@ -5,10 +5,11 @@ UPM::Tool.new "apt" do
   command "install",  "apt install", root: true
   command "update",   "apt update",  root: true
   command "upgrade",  "apt upgrade", root: true
+  command "remove",   "apt remove",  root: true
 
   command "files",  "dpkg-query -L", paged: true
-  command "search", "apt search", paged: true
-  command "info", "apt show", paged: true
+  command "search", "apt search",    paged: true
+  command "info",   "apt show",      paged: true
 
   command "list" do |args|
     if args.any?

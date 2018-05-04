@@ -4,11 +4,14 @@ UPM::Tool.new "pacman" do
 
   bin = ["pacman", "--color=always"]
 
-  command "install", [*bin, "-S"], root: true
-  command "update", [*bin, "-Sy"], root: true
+  command "install", [*bin, "-S"],   root: true
+  command "update",  [*bin, "-Sy"],  root: true
   command "upgrade", [*bin, "-Syu"], root: true
-  command "files", [*bin, "-Ql"], paged: true
+  command "remove",  [*bin, "-R"],   root: true
+
+  command "files",  [*bin, "-Ql"], paged: true
   command "search", [*bin, "-Ss"], paged: true
+
   command "info" do |args|
     run(*bin, "-Qi", *args) || run(*bin, "-Si", *args)
   end
