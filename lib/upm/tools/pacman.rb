@@ -18,9 +18,24 @@ UPM::Tool.new "pacman" do
   end
 
   command "depends" do |args|
+    packages_that_depend_on = proc do |package|
+      result = []
+
+      [`pacman -Sii #{package}`, `pacman -Qi #{package}`].each do |output|
+        output.each_line do |l|
+          if l =~ /Required By\s+: (.+)/
+            result += $1.strip.split unless $1["None"]
+            break
+          end
+        end
+      end
+
+      result
+    end
+
     args.each do |arg|
       puts "=== Packages which depend on: #{arg} ============"
-      packages = packages_that_depend_on(arg)
+      packages = packages_that_depend_on.call(arg)
       puts
       run "pacman", "-Ss", "^(#{packages.join '|'})$" # upstream packages
       run "pacman", "-Qs", "^(#{packages.join '|'})$" # packages that are only installed locally
@@ -28,19 +43,51 @@ UPM::Tool.new "pacman" do
     end
   end
 
-  def packages_that_depend_on(package)
-    result = []
+  command "log" do
+    UPM::LogParser.new(PacmanEvent, "/var/log/pacman.log*").display
+  end
 
-    [`pacman -Sii #{package}`, `pacman -Qi #{package}`].each do |output|
-      output.each_line do |l|
-        if l =~ /Required By\s+: (.+)/
-          result += $1.strip.split unless $1["None"]
-          break
-        end
+  class PacmanEvent < Struct.new(:datestr, :date, :cmd, :name, :v1, :v2)
+
+    # [2015-01-04 04:21] [PACMAN] installed lib32-libidn (1.29-1)
+    # [2015-01-04 04:21] [PACMAN] upgraded lib32-curl (7.38.0-1 -> 7.39.0-1)
+    # [2015-01-07 04:39] [ALPM] upgraded intel-tbb (4.3_20141023-1 -> 4.3_20141204-1)
+    # [2015-01-07 04:39] [ALPM] upgraded iso-codes (3.54-1 -> 3.57-1)
+
+    DATE_RE = /[\d:-]+/
+    LINE_RE = /^\[(#{DATE_RE} #{DATE_RE})\](?: \[(?:PACMAN|ALPM)\])? (removed|installed|upgraded) (.+) \((.+)(?: -> (.+))?\)$/
+
+    CMD_COLORS = {
+      'removed' => :light_red,
+      'installed' => :light_yellow,
+      'upgraded' => :light_green,
+      nil => :white,
+    }
+
+    def self.parse_date(date)
+      DateTime.strptime(date, "%Y-%m-%d %H:%M")
+    end
+
+    def self.from_line(line)
+      if line =~ LINE_RE
+        new($1, parse_date($1), $2, $3, $4, $5)
+      else
+        nil
       end
     end
 
-    result
+    def cmd_color
+      CMD_COLORS[cmd]
+    end
+
+    def to_s
+      date, time = datestr.split
+      "<grey>[<white>#{date} #{time}<grey>] <#{cmd_color}>#{cmd} <light_cyan>#{name} #{"<light_white>#{v2} " if v2}<white>(#{v1})".colorize
+    end
+
   end
 
+
 end
+
+

@@ -106,7 +106,7 @@ module UPM
       if block = @cmds[name]
         block.call args
       else
-        puts "Command #{name} not supported in #{self.class}"
+        puts "Command #{name} not supported in #{@name}"
       end
     end
 
