@@ -10,5 +10,5 @@ command, *args = ARGV
 if command.nil?
   tool.help
 else
-  tool.call_command command, args
+  tool.call_command command, *args
 end

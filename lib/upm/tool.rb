@@ -76,7 +76,7 @@ module UPM
       @@tools[name] = self
     end
 
-    def call_command(name, args)
+    def call_command(name, *args)
       if block = (@cmds[name] || @cmds[ALIASES[name]])
         block.call args
       else
