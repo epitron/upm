@@ -16,12 +16,20 @@ module UPM
       Dir["#{__dir__}/tools/*.rb"].each { |lib| require_relative(lib) }
     end
 
+    def self.os_release
+      @os_release ||= open("/etc/os-release") do |io|
+        io.read.scan(/^(\w+)="?(.+?)"?$/)
+      end.to_h
+    end
+
     def self.current_os_names
-      open("/etc/os-release") do |io|
-        # ID=ubuntu
-        # ID_LIKE=debian
-        io.grep(/^ID(?:_LIKE)?=(.+)/) { $1 }
-      end
+      # ID=ubuntu
+      # ID_LIKE=debian
+      os_release.values_at("ID", "ID_LIKE")
+    end
+
+    def self.nice_os_name
+      os_release.values_at("PRETTY_NAME", "NAME", "ID", "ID_LIKE").first
     end
 
     def self.for_os(os_names=nil)
@@ -33,28 +41,27 @@ module UPM
       @@tools
     end
 
-    
-    # Commands:
-    # ------------------
-    # install
-    # remove
-    # build - compile a package from source and install it
-    # search - using the fastest known API or service
-    # list - show all packages, or the contents of a specific package
-    # info - show metadata about a package
-    # sync/update - retrieve the latest package list or manifest
-    # upgrade - install new versions of all packages
-    # pin - pinning a package means it won't be automatically upgraded
-    # rollback - revert to an earlier version of a package (including its dependencies)
-    # log - show history of package installs
-    # packagers - detect installed package managers, and pick which ones upm should wrap
-    # sources/mirrors - select remote repositories and mirrors
-    # verfiy - verifies the integrity of installed files
-    # clean - clear out the local package cache
-    # monitor - ad-hoc package manager for custom installations (like instmon)
-    # keys - keyrings and package authentication
-    # default - configure the action to take when no arguments are passed to "upm" (defaults to "os:update")
-    
+    COMMAND_HELP = {
+      "install"         => "install a package",
+      "remove"          => "remove a package",
+      "build"           => "compile a package from source and install it",
+      "search"          => "using the fastest known API or service",
+      "list"            => "list installed packages (or search their names if extra arguments are supplied)",
+      "info"            => "show metadata about a package",
+      "sync/update"     => "retrieve the latest package list or manifest",
+      "upgrade"         => "install new versions of all packages",
+      "pin"             => "pinning a package means it won't be automatically upgraded",
+      "rollback"        => "revert to an earlier version of a package (including its dependencies)",
+      "log"             => "show history of package installs",
+      "packagers"       => "detect installed package managers, and pick which ones upm should wrap",
+      "mirrors/sources" => "manage remote repositories and mirrors",
+      "verfiy"          => "verify the integrity of installed files",
+      "clean"           => "clear out the local package cache",
+      "monitor"         => "ad-hoc package manager for custom installations (like instmon)",
+      "keys"            => "keyrings and package authentication",
+      "default"         => "configure the action to take when no arguments are passed to 'upm' (defaults to 'os:update')",
+    }
+
     ALIASES = {
       "file"    => "files",
       "sync"    => "update",
@@ -78,8 +85,19 @@ module UPM
     end
 
     def help
-      puts "#{@name} supported commands:"
-      puts "   #{@cmds.keys.join(", ")}"
+      puts "    Detected OS: #{Tool.nice_os_name}"
+      puts "Package manager: #{@name}"
+      puts
+      puts "Available commands:"
+      available = COMMAND_HELP.select do |name, desc|
+        names = name.split("/")
+        names.any? { |name| @cmds[name] }
+      end
+
+      max_width = available.map(&:first).map(&:size).max
+      available.each do |name, desc|
+        puts "  #{name.rjust(max_width)} | #{desc}"
+      end
     end
 
     def print_files(*paths, include: nil, exclude: nil)
