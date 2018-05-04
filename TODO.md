@@ -30,11 +30,14 @@ Related tool: intoli/exodus
 
 Use fzf for "list" output (or other commands that require selecting, like "remove")
 
-## Proper ARGV parser
+## Commandline argument parser
 
-* Something better than "command, *args = ARGV" (with "--help" available, at the very least.)
+* Add options to commands:
+  * upm upgrade --download-only
+  * upm install --help
+  * upm help install
 
-## Streaming pipes
+## Streaming pipes with colours
 
 * Make the `run` command able to grep the output while streaming the results to the screen.
 * Make run pretend to be a tty, so I don't need `--color=always`.
@@ -78,4 +81,6 @@ Why not!
 
 Do a ping test on available mirrors, and use fzf to select.
 
+## Interrupt catcher
 
+Don't print backtrace when ^C is pressed.
