@@ -62,16 +62,25 @@ module UPM
     end
 
     def self.nice_os_name
-      os_release.values_at("PRETTY_NAME", "NAME", "ID", "ID_LIKE").first
+      os_release.values_at("PRETTY_NAME", "NAME", "ID", "ID_LIKE").first || 
+        (`uname -o`.chomp rescue nil)
     end
 
     def self.for_os(os_names=nil)
       os_names = os_names ? [os_names].flatten : current_os_names
 
+      tool = nil
+
       if os_names.any?
-        @@tools.find { |name, tool| os_names.any? { |name| tool.os.include? name } }.last
-      else
-        @@tools.find { |name, tool| File.which(tool.identifying_binary) }.last
+        tool = @@tools.find { |name, tool| os_names.any? { |name| tool.os.include? name } }.last
+      end
+
+      if tool.nil?
+        tool = @@tools.find { |name, tool| File.which(tool.identifying_binary) }.last
+      end
+
+      if tool.nil?
+        puts "Error: couldn't find a package manager."
       end
     end
 
