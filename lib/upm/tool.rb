@@ -39,21 +39,26 @@ module UPM
     }
 
     @@tools = {}
+    def self.tools; @@tools; end
 
     def self.register_tools!
       Dir["#{__dir__}/tools/*.rb"].each { |lib| require_relative(lib) }
     end
 
     def self.os_release
-      @os_release ||= open("/etc/os-release") do |io|
-        io.read.scan(/^(\w+)="?(.+?)"?$/)
-      end.to_h
+      @os_release ||= begin
+        open("/etc/os-release") do |io|
+          io.read.scan(/^(\w+)="?(.+?)"?$/)
+        end.to_h
+      rescue Errno::ENOENT
+        {}
+      end
     end
 
     def self.current_os_names
       # ID=ubuntu
       # ID_LIKE=debian
-      os_release.values_at("ID", "ID_LIKE")
+      os_release.values_at("ID", "ID_LIKE").compact
     end
 
     def self.nice_os_name
@@ -62,12 +67,15 @@ module UPM
 
     def self.for_os(os_names=nil)
       os_names = os_names ? [os_names].flatten : current_os_names
-      @@tools.find { |name, tool| os_names.any? { |name| tool.os.include? name } }.last
+
+      if os_names.any?
+        @@tools.find { |name, tool| os_names.any? { |name| tool.os.include? name } }.last
+      else
+        @@tools.find { |name, tool| File.which(tool.identifying_binary) }.last
+      end
     end
 
-    def self.tools
-      @@tools
-    end
+    ###################################################################
 
     def initialize(name, &block)
       @name = name
@@ -85,7 +93,10 @@ module UPM
     end
 
     def help
-      puts "    Detected OS: #{Tool.nice_os_name}"
+      if osname = Tool.nice_os_name
+        puts "    Detected OS: #{osname}"
+      end
+
       puts "Package manager: #{@name}"
       puts
       puts "Available commands:"
@@ -100,22 +111,15 @@ module UPM
       end
     end
 
-    def print_files(*paths, include: nil, exclude: nil)
-      lesspipe do |less|
-        paths.each do |path|
-          less.puts "<8>=== <11>#{path} <8>========".colorize
-          open(path) do |io|
-            enum = io.each_line
-            enum = enum.grep(include) if include
-            enum = enum.reject { |line| line[exclude] } if exclude
-            enum.each { |line| less.puts line }
-          end
-          less.puts
-        end
+    ## DSL methods
+
+    def identifying_binary(id_bin=nil)
+      if id_bin 
+        @id_bin = id_bin
+      else
+        @id_bin || @name
       end
     end
-
-    ## DSL methods
 
     def prefix(name)
       @prefix = name
@@ -171,6 +175,21 @@ module UPM
         end
 
         $?.to_i == 0
+      end
+    end
+
+    def print_files(*paths, include: nil, exclude: nil)
+      lesspipe do |less|
+        paths.each do |path|
+          less.puts "<8>=== <11>#{path} <8>========".colorize
+          open(path) do |io|
+            enum = io.each_line
+            enum = enum.grep(include) if include
+            enum = enum.reject { |line| line[exclude] } if exclude
+            enum.each { |line| less.puts line }
+          end
+          less.puts
+        end
       end
     end
 

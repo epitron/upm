@@ -4,6 +4,25 @@ class DateTime
   def to_i; to_time.to_i; end
 end
 
+class File
+  def self.which(bin)
+    ENV["PATH"].split(":").each do |dir|
+      full_path = File.join(dir, bin)
+      return full_path if File.exists? full_path
+    end
+    nil
+  end
+
+  def self.which_is_best?(*bins)
+    bins.flatten.each do |bin|
+      if location = which(bin)
+        return location
+      end
+    end
+    nil
+  end
+end
+
 module Enumerable
   #
   # Split this enumerable into chunks, given some boundary condition. (Returns an array of arrays.)
