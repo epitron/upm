@@ -5,21 +5,38 @@ class DateTime
 end
 
 class File
-  def self.which(bin)
-    ENV["PATH"].split(":").each do |dir|
-      full_path = File.join(dir, bin)
-      return full_path if File.exists? full_path
+
+  #
+  # Overly clever which(), which returns an array if more than one argument was supplied,
+  # or string/nil if only one argument was supplied. 
+  #
+  def self.which(*bins)
+    results = []
+    bins    = bins.flatten
+    paths   = ENV["PATH"].split(":").map { |path| File.realpath(path) }.uniq
+
+    paths.each do |dir|
+      bins.each do |bin|
+
+        full_path = File.join(dir, bin)
+        
+        if File.exists?(full_path)
+          if bins.size == 1
+            return full_path
+          else 
+            results << full_path 
+          end
+        end
+
+      end
     end
-    nil
+
+    bins.size == 1 ? nil : results
   end
 
   def self.which_is_best?(*bins)
-    bins.flatten.each do |bin|
-      if location = which(bin)
-        return location
-      end
-    end
-    nil
+    result = which(*bins.flatten)
+    result.is_a?(Array) ? result.first : result
   end
 end
 
