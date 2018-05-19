@@ -21,4 +21,8 @@ UPM::Tool.new "pkg" do
     end
   end
 
+  command "mirrors" do
+    print_files("/etc/pkg/FreeBSD.conf", exclude: /^(#|$)/)
+  end
+
 end
