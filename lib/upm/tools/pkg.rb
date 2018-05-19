@@ -6,7 +6,7 @@ UPM::Tool.new "pkg" do
   command "update",  "pkg update",  root: true
   command "upgrade", "pkg upgrade", root: true
   command "info",    "pkg clean",   root: true
-  command "check",   "pkg check --checksums", root: true
+  command "verify",  "pkg check --checksums", root: true
 
   command "files",   "pkg list",    paged: true
   command "search",  "pkg search",  paged: true, highlight: true
