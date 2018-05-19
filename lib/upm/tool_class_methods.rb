@@ -14,13 +14,19 @@ module UPM
             io.read.scan(/^(\w+)="?(.+?)"?$/)
           end.to_h
         rescue Errno::ENOENT
-          {}
+          nil
         end
       end
 
       def current_os_names
         # eg: ID=ubuntu, ID_LIKE=debian
-        os_release.values_at("ID", "ID_LIKE").compact
+        if os_release
+          os_release.values_at("ID", "ID_LIKE").compact
+        else
+          # `uname -s` => Darwin|FreeBSD|OpenBSD
+          # `uname -o` => Android|Cygwin
+          [`uname -s`, `uname -o`].map(&:chomp).uniq
+        end
       end
 
       def nice_os_name
@@ -43,10 +49,6 @@ module UPM
 
         if tool.nil?
           tool = @@tools.find { |name, tool| File.which(tool.identifying_binary) }&.last
-        end
-
-        if tool.nil?
-          puts "Error: couldn't find a package manager."
         end
 
         tool

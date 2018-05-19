@@ -1,17 +1,28 @@
 # TODO
 
+## Pipes and filters
+
+* `Tool::DSL#run` is currently somewhat awkward; it would be simpler if returned an `Enumerator`, which could then be filtered (ie: highlight/grep), or concatenated to other `Enumerator`s.
+
+## Streaming pipes with colours
+
+* Make the `run` command able to grep the output while streaming the results to the screen.
+* Make run pretend to be a tty, so I don't need `--color=always`.
+* Use spawn, like so:
+  ```
+r,w = IO.pipe
+spawn(*%w[echo hello world], out: w)
+spawn(*%w[tr a-z A-Z], in: r)
+```
+
 ## More package managers
 
 Currently missing:
 * RedHat/Fedora/CentOS
 * OSX
-* FreeBSD
+* <s>FreeBSD</s>
 * OpenBSD
 * SuSE
-
-## Abbrev cmds
-
-* eg: upm install => upm i => u i
 
 ## Dependency-fetching features
 
@@ -36,17 +47,6 @@ Use fzf for "list" output (or other commands that require selecting, like "remov
   * upm upgrade --download-only
   * upm install --help
   * upm help install
-
-## Streaming pipes with colours
-
-* Make the `run` command able to grep the output while streaming the results to the screen.
-* Make run pretend to be a tty, so I don't need `--color=always`.
-* Use spawn, like so:
-  ```
-r,w = IO.pipe
-spawn(*%w[echo hello world], out: w)
-spawn(*%w[tr a-z A-Z], in: r)
-```
 
 ## Figure out how to integrate language package managers
 
@@ -88,3 +88,12 @@ Don't print backtrace when ^C is pressed.
 ## Tests
 
 Create fake OS environments that you can chroot into and run upm to test it out.
+
+
+
+# DONE
+
+## Abbrev cmds
+
+* eg: upm install => upm i => u i
+

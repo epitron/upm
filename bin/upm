@@ -4,11 +4,18 @@ $LOAD_PATH.unshift(File.expand_path(File.join('..', 'lib'), bin_dir))
 
 require 'upm'
 
-tool = UPM::Tool.for_os
+unless tool = UPM::Tool.for_os
+  $stderr.puts "Error: I don't recognize this OS, or its package manager."
+  exit 1
+end
+
 command, *args = ARGV
 
 if command.nil?
   tool.help
 else
-  tool.call_command command, *args
+  begin
+    tool.call_command command, *args
+  rescue Interrupt
+  end
 end
