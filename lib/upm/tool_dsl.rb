@@ -35,9 +35,17 @@ module UPM
 
       ## Helpers
 
-      def run(*args, root: false, paged: false, grep: nil)
-        if root and File.which("sudo") 
-          args.unshift "sudo" 
+      def run(*args, root: false, paged: false, grep: nil, highlight: nil)
+        if root
+          if Process.uid != 0
+            if File.which("sudo") 
+              args.unshift "sudo"
+            elsif File.which("su")
+              args = ["su", "-c"] + args
+            else
+              raise "Error: You must be root to run this command. (And I couldn't find the 'sudo' *or* 'su' commands.)"
+            end
+          end   
         end
 
         if !paged and !grep
@@ -46,20 +54,38 @@ module UPM
 
           IO.popen(args, err: [:child, :out]) do |command_io|
             
-            if grep
-              pattern = grep.is_a?(Regexp) ? grep.source : grep.to_s 
-              grep_io = IO.popen(["grep", "--color=always", "-Ei", pattern], "w+")
-              IO.copy_stream(command_io, grep_io)
-              grep_io.close_write
-              command_io = grep_io
+            # if grep
+            #   pattern = grep.is_a?(Regexp) ? grep.source : grep.to_s 
+            #   grep_io = IO.popen(["grep", "--color=always", "-Ei", pattern], "w+")
+            #   IO.copy_stream(command_io, grep_io)
+            #   grep_io.close_write
+            #   command_io = grep_io
+            # end
+
+            # if paged
+            #   lesspipe do |less|
+            #     IO.copy_stream(command_io, less)
+            #   end
+            # else
+            #   IO.copy_stream(command_io, STDOUT)
+            # end
+
+            highlight_proc = if highlight
+              proc { |line| line.gsub(highlight) { |m| "\e[33;1m#{m}\e[0m" } }
+            else
+              proc { |line| line }
             end
 
-            if paged
-              lesspipe do |less|
-                IO.copy_stream(command_io, less)
-              end
+            grep_proc = if grep
+              proc { |line| line[grep] }
             else
-              IO.copy_stream(command_io, STDOUT)
+              proc { true }
+            end
+
+            lesspipe(disabled: !paged) do |less|
+              command_io.each_line do |line|
+                less.puts highlight_proc.(line) if grep_proc.(line)
+              end
             end
 
           end

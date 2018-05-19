@@ -28,14 +28,16 @@ module UPM
       "download"         => "download package list and updates, but don't insatall them",
       "pin"              => "pinning a package means it won't be automatically upgraded",
       "rollback"         => "revert to an earlier version of a package (including its dependencies)",
+      "verify/check"     => "verify the integrity of packages' files on the filesystem",
+      "audit/vuln"       => "show known vulnerabilities in installed packages",
       "log"              => "show history of package installs",
       "packagers"        => "detect installed package managers, and pick which ones upm should wrap",
       "mirrors/sources"  => "manage remote repositories and mirrors",
-      "verfiy"           => "verify the integrity of installed files",
       "clean"            => "clear out the local package cache",
       "monitor"          => "ad-hoc package manager for custom installations (like instmon)",
       "keys"             => "keyrings and package authentication",
       "default"          => "configure the action to take when no arguments are passed to 'upm' (defaults to 'os:update')",
+      "stats"            => "show statistics about package database(s)",
     }
 
     ALIASES = {
@@ -43,6 +45,9 @@ module UPM
       "sync"    => "update",
       "sources" => "mirrors",
       "show"    => "info",
+      "vuln"    => "audit",
+      "vulns"   => "audit",
+      "check"   => "verify",
       "u"       => "upgrade",
       "i"       => "install",
       "d"       => "download",
