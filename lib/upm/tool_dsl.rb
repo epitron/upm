@@ -25,8 +25,10 @@ module UPM
             raise "Error: command argument must be a String or an Array; it was a #{cmd.class}"
           end
 
-          query = highlight && highlight.join(" ") 
-          @cmds[name] = proc { |args| run(*shell_command, *args, paged: paged, root: root, highlight: query) }
+          @cmds[name] = proc do |args|
+            query = highlight && args.join(" ") 
+            run(*shell_command, *args, paged: paged, root: root, highlight: query)
+          end
         end
       end
 
