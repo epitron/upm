@@ -9,13 +9,13 @@ UPM::Tool.new "pkg" do
   command "check",   "pkg check --checksums", root: true
 
   command "files",   "pkg list",    paged: true
-  command "search",  "pkg search",  paged: true
+  command "search",  "pkg search",  paged: true, highlight: true
   command "info",    "pkg info",    paged: true
 
   command "list" do |args|
     if args.any?
       query = args.join
-      run "pkg", "info", grep: query, paged: true
+      run "pkg", "info", grep: query, highlight: query, paged: true
     else
       run "pkg", "info", paged: true
     end

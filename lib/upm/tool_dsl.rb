@@ -13,7 +13,7 @@ module UPM
         @prefix = name
       end
 
-      def command(name, shell_command=nil, root: false, paged: false, &block)
+      def command(name, shell_command=nil, root: false, paged: false, highlight: nil, &block)
         @cmds ||= {}
 
         if block_given?
@@ -25,7 +25,8 @@ module UPM
             raise "Error: command argument must be a String or an Array; it was a #{cmd.class}"
           end
 
-          @cmds[name] = proc { |args| run(*shell_command, *args, paged: paged, root: root) }
+          query = highlight && highlight.join(" ") 
+          @cmds[name] = proc { |args| run(*shell_command, *args, paged: paged, root: root, highlight: query) }
         end
       end
 
