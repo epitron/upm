@@ -116,7 +116,7 @@ module UPM
         if block = (@cmds[name] || @cmds[ALIASES[name]])
           block.call args
         else
-          puts "Command #{name} not supported in #{@name}"
+          puts "Command #{name.inspect} not supported by #{@name.inspect}"
         end
       end
 
