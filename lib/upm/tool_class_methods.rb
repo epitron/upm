@@ -14,7 +14,7 @@ module UPM
             io.read.scan(/^(\w+)="?(.+?)"?$/)
           end.to_h
         rescue Errno::ENOENT
-          nil
+          {}
         end
       end
 
