@@ -33,6 +33,16 @@ def lesspipe(*args)
 
   output = args.first if args.any?
 
+  # Don't page, just output to STDOUT
+  if options[:disabled]
+    if output
+      puts output
+    else
+      yield STDOUT
+    end
+    return
+  end
+
   params = []
   params << "-R" unless options[:color] == false
   params << "-S" unless options[:wrap] == true
