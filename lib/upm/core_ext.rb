@@ -13,7 +13,7 @@ class File
   def self.which(*bins)
     results = []
     bins    = bins.flatten
-    paths   = ENV["PATH"].split(":").map { |path| File.realpath(path) }.uniq
+    paths   = ENV["PATH"].split(":").map { |path| File.realpath(path) rescue nil }.compact.uniq
 
     paths.each do |dir|
       bins.each do |bin|
