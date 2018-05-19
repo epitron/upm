@@ -38,11 +38,11 @@ module UPM
         tool = nil
 
         if os_names.any?
-          tool = @@tools.find { |name, tool| os_names.any? { |name| tool.os.include? name } }.last
+          tool = @@tools.find { |name, tool| os_names.any? { |name| tool.os.include? name } }&.last
         end
 
         if tool.nil?
-          tool = @@tools.find { |name, tool| File.which(tool.identifying_binary) }.last
+          tool = @@tools.find { |name, tool| File.which(tool.identifying_binary) }&.last
         end
 
         if tool.nil?
