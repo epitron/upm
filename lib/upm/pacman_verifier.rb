@@ -32,9 +32,11 @@ module UPM
         version = chunks[-2..-1].join("-")
         package = chunks[0...-2].join("-")
 
-        next unless included.any? and included.include?(package)
+        if included.any?
+          next if not included.include?(package)
+        end
 
-        puts "<8>[<7>+<8>] <10>#{package} <3>#{version}".colorize
+        puts "<8>[<7>+<8>] <10>#{package} <2>#{version}".colorize
 
         result   = []
         defaults = {}
