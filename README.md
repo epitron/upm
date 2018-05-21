@@ -6,6 +6,8 @@ Wraps all known package managers to provide a consistent and pretty interface, a
 
 All tools will give you modern, pretty, colourful, piped-to-less output, and you'll only have to remember one consistent set of commands. It'll also prompt you with a text UI whenever faced with ambiguity.
 
+It will also allow users to maintain lists of their favorite packages (and sync them to some remote server), so that they can automatically install them whenever they setup a new machine. (This can include git repos full of dotfiles/scripts, to give the user a comfortable home environment regardless of which OS they're using.)
+
 ## Usage:
 
 ```
@@ -24,12 +26,13 @@ u <command> <pkg>
 * `info` - show metadata about a package
 * `sync`/`update` - retrieve the latest package list or manifest
 * `upgrade` - install new versions of all packages
+* `verfiy` - verify the integrity of installed files
+* `audit` - show known vulnerabilities for installed packages
 * `pin` - pinning a package means it won't be automatically upgraded
 * `rollback` - revert to an earlier version of a package (including its dependencies)
 * `log` - show history of package installs 
 * `packagers` - detect installed package managers, and pick which ones upm should wrap
 * `sources`/`mirrors` - select remote repositories and mirrors
-* `verfiy` - verifies the integrity of installed files
 * `clean` - clear out the local package cache
 * `monitor` - ad-hoc package manager for custom installations (like instmon)
 * `keys` - keyrings and package authentication
@@ -44,6 +47,7 @@ rpm:<pkg> (or yum: y:)
 bsd:<pkg> (or b:)
 ruby:<pkg> (or r: gem:)
 python:<pkg>,<pkg> (or py: p: pip:)
+go:<pkg>,<pkg>,<pkg>
 ```
 
 ### ...or suffixed with its file extension:
