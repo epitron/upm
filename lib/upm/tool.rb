@@ -19,8 +19,9 @@ module UPM
     COMMAND_HELP = {
       "install"          => "install a package",
       "remove/uninstall" => "remove a package",
-      "build"            => "compile a package from source and install it",
-      "search"           => "using the fastest known API or service",
+      "search"           => "search packages",
+      "search-sources"   => "search package source (for use with 'build' command)",
+      "build"            => "build a package from source and install it",
       "list"             => "list installed packages (or search their names if extra arguments are supplied)",
       "info"             => "show metadata about a package",
       "update/sync"      => "retrieve the latest package list or manifest",
@@ -54,6 +55,7 @@ module UPM
       "s"       => "search",
       "f"       => "files",
       "r"       => "remove",
+      "source-search" => "search-sources",
     }
 
     def initialize(name, &block)
