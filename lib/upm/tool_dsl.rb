@@ -17,8 +17,15 @@ module UPM
         @cmds ||= {}
 
         if block_given?
-          @cmds[name] = block
+          
+          if root and Process.uid != 0
+            exec("sudo", $PROGRAM_NAME, *ARGV)
+          else
+            @cmds[name] = block
+          end
+
         elsif shell_command
+          
           if shell_command.is_a? String
             shell_command = shell_command.split
           elsif not shell_command.is_a? Array
@@ -29,6 +36,7 @@ module UPM
             query = highlight && args.join(" ") 
             run(*shell_command, *args, paged: paged, root: root, highlight: query)
           end
+
         end
       end
 
@@ -95,6 +103,13 @@ module UPM
 
           $?.to_i == 0
         end
+      end
+
+      def curl(url)
+        IO.popen(["curl", "-Ss", url], &:read)
+      rescue Errno::ENOENT
+        puts "Error: 'curl' isn't installed. You need this!"
+        exit 1
       end
 
       def print_files(*paths, include: nil, exclude: nil)

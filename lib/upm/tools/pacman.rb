@@ -1,4 +1,3 @@
-
 UPM::Tool.new "pacman" do
 
   os "arch"
@@ -10,16 +9,14 @@ UPM::Tool.new "pacman" do
   command "upgrade", [*bin, "-Syu"], root: true
   command "remove",  [*bin, "-R"],   root: true
 
-  # command "check",  [*bin, "-Qkk"]
-  command "verify" do |args|
+  command "verify", root: true do |args|
     require 'upm/pacman_verifier'
     UPM::PacmanVerifier.new.verify!(*args)
   end
 
   command "audit",  "arch-audit",  paged: true
   command "files",  [*bin, "-Ql"], paged: true
-  command "search", [*bin, "-Ss"], paged: true
-
+  command "search", [*bin, "-Ss"], paged: true, highlight: true
 
   command "info" do |args|
     run(*bin, "-Qi", *args, paged: true) || run(*bin, "-Si", *args, paged: true)
@@ -108,7 +105,4 @@ UPM::Tool.new "pacman" do
 
   end
 
-
 end
-
-
