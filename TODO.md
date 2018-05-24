@@ -1,5 +1,13 @@
 # TODO
 
+## Performance
+
+It's currently very clunky on the rpi2.
+
+## Custom help for command
+
+eg: command "something", help: "does stuff", root: true do ... end
+
 ## Pipes and filters
 
 * `Tool::DSL#run` is currently somewhat awkward; it would be simpler if returned an `Enumerator`, which could then be filtered (ie: highlight/grep), or concatenated to other `Enumerator`s.
