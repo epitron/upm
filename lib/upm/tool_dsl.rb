@@ -33,10 +33,14 @@ module UPM
           end
 
           @cmds[name] = proc do |args|
-            query = highlight && args.join(" ") 
+            query = highlight ? args.join(" ") : nil
             run(*shell_command, *args, paged: paged, root: root, highlight: query)
           end
 
+        else
+          
+          raise "Error: Must supply a block or shell command"
+        
         end
       end
 
