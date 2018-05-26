@@ -18,6 +18,8 @@ UPM::Tool.new "pkg" do
     FreshportsSearch.new.search!(query)
   end
 
+  command "log", "grep pkg: /var/log/messages", paged: true
+
   command "build" do |*args|
     # svn checkout --depth empty svn://svn.freebsd.org/ports/head /usr/ports
     # cd /usr/ports
