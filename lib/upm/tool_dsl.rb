@@ -33,7 +33,7 @@ module UPM
           end
 
           @cmds[name] = proc do |args|
-            query = highlight ? args.join(" ") : nil
+            query = highlight ? args.join("\\\\s+") : nil
             run(*shell_command, *args, paged: paged, root: root, highlight: query)
           end
 
@@ -85,11 +85,11 @@ module UPM
             #   IO.copy_stream(command_io, STDOUT)
             # end
 
-            highlight_proc = if highlight
-              proc { |line| line.gsub(highlight) { |m| "\e[33;1m#{m}\e[0m" } }
-            else
-              proc { |line| line }
-            end
+            # highlight_proc = if highlight
+            #   proc { |line| line.gsub(highlight) { |m| "\e[33;1m#{m}\e[0m" } }
+            # else
+            #   proc { |line| line }
+            # end
 
             grep_proc = if grep
               proc { |line| line[grep] }
@@ -97,9 +97,10 @@ module UPM
               proc { true }
             end
 
-            lesspipe(disabled: !paged) do |less|
+            lesspipe(disabled: !paged, search: highlight, always: true) do |less|
               command_io.each_line do |line|
-                less.puts highlight_proc.(line) if grep_proc.(line)
+                # less.puts highlight_proc.(line) if grep_proc.(line)
+                less.puts line if grep_proc.(line)
               end
             end
 

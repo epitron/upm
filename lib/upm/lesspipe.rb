@@ -23,6 +23,8 @@
 #    :color  => Allow ANSI colour codes?
 #    :wrap   => Wrap long lines?
 #    :always => Always page, even if there's less than one page of text?
+#    :tail   => Seek to the end of the stream
+#    :search => <regexp> searches the output using the "/" operator
 #
 def lesspipe(*args)
   if args.any? and args.last.is_a?(Hash)
@@ -44,14 +46,17 @@ def lesspipe(*args)
   end
 
   params = []
-  params << "-R" unless options[:color] == false
-  params << "-S" unless options[:wrap] == true
+  params << "-R" unless options[:color]  == false
+  params << "-S" unless options[:wrap]   == true
   params << "-F" unless options[:always] == true
-  if options[:tail] == true
+  params << "-X"
+  
+  if regexp = options[:search]
+    params << "+/#{regexp}"
+  elsif options[:tail] == true
     params << "+\\>"
     $stderr.puts "Seeking to end of stream..."
   end
-  params << "-X"
 
   IO.popen("less #{params * ' '}", "w") do |less|
     if output
