@@ -50,6 +50,7 @@ def lesspipe(*args)
   params << "-S" unless options[:wrap]   == true
   params << "-F" unless options[:always] == true
   params << "-X"
+  params << "-I"
 
   if regexp = options[:search]
     params << "+/#{regexp}"
@@ -69,6 +70,7 @@ def lesspipe(*args)
   }
 
   IO.popen(env, ["less", *params], "w") do |less|
+    # less.puts params.inspect
     if output
       less.puts output
     else
