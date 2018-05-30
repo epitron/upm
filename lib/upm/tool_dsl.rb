@@ -33,7 +33,7 @@ module UPM
           end
 
           @cmds[name] = proc do |args|
-            query = highlight ? args.join("\\\\s+") : nil
+            query = highlight ? args.join("\\s+") : nil
             run(*shell_command, *args, paged: paged, root: root, highlight: query)
           end
 

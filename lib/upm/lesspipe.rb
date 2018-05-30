@@ -50,7 +50,7 @@ def lesspipe(*args)
   params << "-S" unless options[:wrap]   == true
   params << "-F" unless options[:always] == true
   params << "-X"
-  
+
   if regexp = options[:search]
     params << "+/#{regexp}"
   elsif options[:tail] == true
@@ -58,7 +58,17 @@ def lesspipe(*args)
     $stderr.puts "Seeking to end of stream..."
   end
 
-  IO.popen("less #{params * ' '}", "w") do |less|
+  env = {
+    "LESS_TERMCAP_mb" => "\e[01;31m",
+    "LESS_TERMCAP_md" => "\e[01;37m",
+    "LESS_TERMCAP_me" => "\e[0m",
+    "LESS_TERMCAP_se" => "\e[0m",
+    "LESS_TERMCAP_so" => "\e[01;44;33m",
+    "LESS_TERMCAP_ue" => "\e[0m",
+    "LESS_TERMCAP_us" => "\e[01;32m",
+  }
+
+  IO.popen(env, ["less", *params], "w") do |less|
     if output
       less.puts output
     else
