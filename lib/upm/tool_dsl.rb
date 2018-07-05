@@ -2,7 +2,7 @@ module UPM
   class Tool
     module DSL
       def identifying_binary(id_bin=nil)
-        if id_bin 
+        if id_bin
           @id_bin = id_bin
         else
           @id_bin || @name
@@ -25,7 +25,7 @@ module UPM
           end
 
         elsif shell_command
-          
+
           if shell_command.is_a? String
             shell_command = shell_command.split
           elsif not shell_command.is_a? Array
@@ -38,9 +38,9 @@ module UPM
           end
 
         else
-          
+
           raise "Error: Must supply a block or shell command"
-        
+
         end
       end
 
@@ -53,14 +53,14 @@ module UPM
       def run(*args, root: false, paged: false, grep: nil, highlight: nil)
         if root
           if Process.uid != 0
-            if File.which("sudo") 
+            if File.which("sudo")
               args.unshift "sudo"
             elsif File.which("su")
               args = ["su", "-c"] + args
             else
               raise "Error: You must be root to run this command. (And I couldn't find the 'sudo' *or* 'su' commands.)"
             end
-          end   
+          end
         end
 
         if !paged and !grep
@@ -68,9 +68,9 @@ module UPM
         else
 
           IO.popen(args, err: [:child, :out]) do |command_io|
-            
+
             # if grep
-            #   pattern = grep.is_a?(Regexp) ? grep.source : grep.to_s 
+            #   pattern = grep.is_a?(Regexp) ? grep.source : grep.to_s
             #   grep_io = IO.popen(["grep", "--color=always", "-Ei", pattern], "w+")
             #   IO.copy_stream(command_io, grep_io)
             #   grep_io.close_write
