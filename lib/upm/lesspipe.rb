@@ -49,7 +49,7 @@ def lesspipe(*args)
 
   less_bin = File.which("less")
 
-  if File.symlink?(less_bin) and File.readlink(lessbin)[/busybox$/]
+  if File.symlink?(less_bin) and File.readlink(less_bin)[/busybox$/]
     # busybox less only supports one option!
     params << "-S" unless options[:wrap]   == true
   else
