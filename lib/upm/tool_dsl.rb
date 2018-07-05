@@ -50,7 +50,7 @@ module UPM
 
       ## Helpers
 
-      def run(*args, root: false, paged: false, grep: nil, highlight: nil)
+      def run(*args, root: false, paged: false, grep: nil, highlight: nil, sort: false)
         if root
           if Process.uid != 0
             if File.which("sudo")
@@ -63,10 +63,10 @@ module UPM
           end
         end
 
-        if !paged and !grep
+
+        unless paged or grep or sort
           system(*args)
         else
-
           IO.popen(args, err: [:child, :out]) do |command_io|
 
             # if grep
@@ -91,17 +91,16 @@ module UPM
             #   proc { |line| line }
             # end
 
-            grep_proc = if grep
-              proc { |line| line[grep] }
-            else
-              proc { true }
-            end
-
-            lesspipe(disabled: !paged, search: highlight, always: true) do |less|
-              command_io.each_line do |line|
-                # less.puts highlight_proc.(line) if grep_proc.(line)
-                less.puts line if grep_proc.(line)
+            lesspipe(disabled: !paged, search: highlight, always: false) do |less|
+              each_proc = if grep
+                proc { |line| less.puts line if line[grep] }
+              else
+                proc { |line| less.puts line }
               end
+
+              lines = command_io.each_line
+              lines = lines.to_a.sort if sort
+              lines.each(&each_proc)
             end
 
           end
