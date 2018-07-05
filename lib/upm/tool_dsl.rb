@@ -17,9 +17,9 @@ module UPM
         @cmds ||= {}
 
         if block_given?
-          
+
           if root and Process.uid != 0
-            exec("sudo", $PROGRAM_NAME, *ARGV)
+            @cmds[name] = proc { exec("sudo", $PROGRAM_NAME, *ARGV) }
           else
             @cmds[name] = block
           end
