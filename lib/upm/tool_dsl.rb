@@ -44,8 +44,8 @@ module UPM
         end
       end
 
-      def os(*names)
-        names.any? ? @os = names : @os
+      def os(*args)
+        args.any? ? @os = args : @os
       end
 
       ## Helpers
