@@ -30,7 +30,7 @@ u <command> <pkg>
 * `audit` - show known vulnerabilities for installed packages
 * `pin` - pinning a package means it won't be automatically upgraded
 * `rollback` - revert to an earlier version of a package (including its dependencies)
-* `log` - show history of package installs 
+* `log` - show history of package installs
 * `packagers` - detect installed package managers, and pick which ones upm should wrap
 * `sources`/`mirrors` - select remote repositories and mirrors
 * `clean` - clear out the local package cache
@@ -108,3 +108,7 @@ Rollback:
 * Use the pretty text-mode UI that passenger-install uses
 * Context-dependent operation
   * eg: if you're in a ruby project's directory, set the 'ruby' namespace to highest priority
+
+## Similar Projects
+
+* [PackageKit](https://en.wikipedia.org/wiki/PackageKit)
