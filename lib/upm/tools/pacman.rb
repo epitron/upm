@@ -6,7 +6,7 @@ UPM::Tool.new "pacman" do
 
   command "install", [*bin, "-S"],   root: true
   command "update",  [*bin, "-Sy"],  root: true
-  command "upgrade", [*bin, "-Syu"], root: true
+  command "upgrade", [*bin, "-Syu", "--noconfirm"], root: true
   command "remove",  [*bin, "-R"],   root: true
 
   command "verify", root: true do |args|
