@@ -2,7 +2,7 @@ module UPM
   class Tool
     module DSL
       def identifying_binary(id_bin=nil)
-        if id_bin 
+        if id_bin
           @id_bin = id_bin
         else
           @id_bin || @name
@@ -17,15 +17,15 @@ module UPM
         @cmds ||= {}
 
         if block_given?
-          
+
           if root and Process.uid != 0
-            exec("sudo", $PROGRAM_NAME, *ARGV)
+            @cmds[name] = proc { exec("sudo", $PROGRAM_NAME, *ARGV) }
           else
             @cmds[name] = block
           end
 
         elsif shell_command
-          
+
           if shell_command.is_a? String
             shell_command = shell_command.split
           elsif not shell_command.is_a? Array
@@ -38,39 +38,39 @@ module UPM
           end
 
         else
-          
+
           raise "Error: Must supply a block or shell command"
-        
+
         end
       end
 
-      def os(*names)
-        names.any? ? @os = names : @os
+      def os(*args)
+        args.any? ? @os = args : @os
       end
 
       ## Helpers
 
-      def run(*args, root: false, paged: false, grep: nil, highlight: nil)
+      def run(*args, root: false, paged: false, grep: nil, highlight: nil, sort: false)
         if root
           if Process.uid != 0
-            if File.which("sudo") 
+            if File.which("sudo")
               args.unshift "sudo"
             elsif File.which("su")
               args = ["su", "-c"] + args
             else
               raise "Error: You must be root to run this command. (And I couldn't find the 'sudo' *or* 'su' commands.)"
             end
-          end   
+          end
         end
 
-        if !paged and !grep
+
+        unless paged or grep or sort
           system(*args)
         else
-
           IO.popen(args, err: [:child, :out]) do |command_io|
-            
+
             # if grep
-            #   pattern = grep.is_a?(Regexp) ? grep.source : grep.to_s 
+            #   pattern = grep.is_a?(Regexp) ? grep.source : grep.to_s
             #   grep_io = IO.popen(["grep", "--color=always", "-Ei", pattern], "w+")
             #   IO.copy_stream(command_io, grep_io)
             #   grep_io.close_write
@@ -91,17 +91,16 @@ module UPM
             #   proc { |line| line }
             # end
 
-            grep_proc = if grep
-              proc { |line| line[grep] }
-            else
-              proc { true }
-            end
-
-            lesspipe(disabled: !paged, search: highlight, always: true) do |less|
-              command_io.each_line do |line|
-                # less.puts highlight_proc.(line) if grep_proc.(line)
-                less.puts line if grep_proc.(line)
+            lesspipe(disabled: !paged, search: highlight, always: false) do |less|
+              each_proc = if grep
+                proc { |line| less.puts line if line[grep] }
+              else
+                proc { |line| less.puts line }
               end
+
+              lines = command_io.each_line
+              lines = lines.to_a.sort if sort
+              lines.each(&each_proc)
             end
 
           end

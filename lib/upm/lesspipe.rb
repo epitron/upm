@@ -46,17 +46,26 @@ def lesspipe(*args)
   end
 
   params = []
-  params << "-R" unless options[:color]  == false
-  params << "-S" unless options[:wrap]   == true
-  params << "-F" unless options[:always] == true
-  params << "-X"
-  params << "-I"
 
-  if regexp = options[:search]
-    params << "+/#{regexp}"
-  elsif options[:tail] == true
-    params << "+\\>"
-    $stderr.puts "Seeking to end of stream..."
+  less_bin = File.which("less")
+
+  if File.symlink?(less_bin) and File.readlink(less_bin)[/busybox$/]
+    # busybox less only supports one option!
+    params << "-S" unless options[:wrap]   == true
+  else
+    # authentic less
+    params << "-R" unless options[:color]  == false
+    params << "-S" unless options[:wrap]   == true
+    params << "-F" unless options[:always] == true
+    params << "-X"
+    params << "-I"
+
+    if regexp = options[:search]
+      params << "+/#{regexp}"
+    elsif options[:tail] == true
+      params << "+\\>"
+      $stderr.puts "Seeking to end of stream..."
+    end
   end
 
   env = {
@@ -64,12 +73,14 @@ def lesspipe(*args)
     "LESS_TERMCAP_md" => "\e[01;37m",
     "LESS_TERMCAP_me" => "\e[0m",
     "LESS_TERMCAP_se" => "\e[0m",
-    "LESS_TERMCAP_so" => "\e[01;44;33m",
+    # "LESS_TERMCAP_so" => "\e[30;44m",      # highlight: black on blue
+    "LESS_TERMCAP_so" => "\e[01;44;33m", # highlight: bright yellow on blue
+    # "LESS_TERMCAP_so" => "\e[30;43m",    # highlight: black on yellow
     "LESS_TERMCAP_ue" => "\e[0m",
     "LESS_TERMCAP_us" => "\e[01;32m",
   }
 
-  IO.popen(env, ["less", *params], "w") do |less|
+  IO.popen(env, [less_bin, *params], "w") do |less|
     # less.puts params.inspect
     if output
       less.puts output

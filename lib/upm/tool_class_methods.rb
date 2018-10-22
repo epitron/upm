@@ -10,9 +10,10 @@ module UPM
 
       def os_release
         @os_release ||= begin
-          open("/etc/os-release") do |io|
+          pairs = open("/etc/os-release") do |io|
             io.read.scan(/^(\w+)="?(.+?)"?$/)
-          end.to_h
+          end
+          Hash[pairs]
         rescue Errno::ENOENT
           {}
         end
@@ -44,14 +45,14 @@ module UPM
         tool = nil
 
         if os_names.any?
-          tool = @@tools.find { |name, tool| os_names.any? { |name| tool.os.include? name } }&.last
+          tool = @@tools.find { |name, tool| os_names.any? { |name| tool.os.include? name } }
         end
 
         if tool.nil?
-          tool = @@tools.find { |name, tool| File.which(tool.identifying_binary) }&.last
+          tool = @@tools.find { |name, tool| File.which(tool.identifying_binary) }
         end
 
-        tool
+        tool.last
       end
 
     end
