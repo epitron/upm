@@ -2,11 +2,11 @@ UPM::Tool.new "yum" do
 
   os "centos", "fedora", "rhel"
 
-  command "install", "yum install",  root: true
-  command "remove",  "yum remove",   root: true
-  command "update",  "yum update",   root: true
-  command "upgrade", "yum upgrade",  root: true
-  command "clean",   "yum clean",    root: true
+  command "install", "yum install",    root: true
+  command "remove",  "yum remove",     root: true
+  command "update",  "yum updateinfo", root: true
+  command "upgrade", "yum update",     root: true
+  command "clean",   "yum clean",      root: true
 
   command "files",   "rpm -ql",  paged: true
   command "search" do |args|
