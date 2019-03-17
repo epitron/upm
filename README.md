@@ -73,18 +73,19 @@ go:<pkg>,<pkg>,<pkg>
 * Wine: `winetricks`
 * Ruby: `rubygems`
 * Python: `pip`/`easy_install`
-* Javascript: `npm`
-* Clojure: `leiningen`
-* Java: `gradle`
-* Erlang: `rebar`
-* Scala: `sbt`
+* Javascript/NodeJS: `npm`
 * Rust: `cargo`
+* Dart: `pub`
+* go: `go-get`
 * R: `cran`
 * Lua: `rocks`
 * Julia: `Pkg`
 * Haskell: `cabal`
+* Clojure: `leiningen`
+* Java: `gradle`
+* Erlang: `rebar`
+* Scala: `sbt`
 * Perl: `cpan`
-* go: `go-get`
 
 ...[and many more!](https://en.wikipedia.org/wiki/List_of_software_package_management_systems)
 
@@ -103,11 +104,50 @@ Rollback:
 
 ![pacman-rollback](https://raw.githubusercontent.com/epitron/scripts/master/screenshots/pacman-rollback.png)
 
+# Future Directions
+
 ## TODOs:
 
 * Use the pretty text-mode UI that passenger-install uses
 * Context-dependent operation
   * eg: if you're in a ruby project's directory, set the 'ruby' namespace to highest priority
+
+## Containers, VMs, and Virtual Environments:
+
+Containers, VMs, and Virtual Environments are another pile of tools which do roughly the same thing: they gather together the dependencies for a specific program, or small set of programs, into a bundle, and create an isolated environment in which it can run.
+
+In the future, these could be wrapped by `ucm` (Universal Container Manager), if I get around to it.
+
+### Container tools to wrap:
+
+* Virtual Environments:
+  * Python: `virtualenv`
+  * Ruby: `bundler`
+  * Java: `gradle`
+  * NodeJS: `npm`
+* Containers:
+  * docker
+  * rkt
+  * snapd
+  * systemd
+  * podman
+  * nanobox
+  * SmartOS zones
+  * BSD jails
+* Wine environments:
+  * wine prefixes
+  * playonlinuxs
+  * proton
+* Virtual Machines:
+  * qemnu
+  * virtualbox
+  * VMware
+  * firecracker
+* Hypervisors:
+  * ESXi
+  * Xen
+  * Nova
+
 
 ## Similar Projects
 
