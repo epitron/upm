@@ -125,7 +125,8 @@ In the future, these could be wrapped by `ucm` (Universal Container Manager), if
   * Ruby: `bundler`
   * Java: `gradle`
   * NodeJS: `npm`
-* Containers:
+* Containerized Applications/Systems:
+  * AppImage
   * docker
   * rkt
   * snapd
