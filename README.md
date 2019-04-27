@@ -2,7 +2,13 @@
 
 ## Concept:
 
-Wraps all known package managers to provide a consistent and pretty interface, along with advanced features not supported by all tools, such as rollback and pinning.
+Wraps all known package managers to provide a consistent and pretty interface, along with advanced features not supported by all tools, such as:
+- install log
+- rollback
+- pinning
+- fuzzy search
+- containerization/sandboxing
+- learning (community statistics and user choices)
 
 All tools will give you modern, pretty, colourful, piped-to-less output, and you'll only have to remember one consistent set of commands. It'll also prompt you with a text UI whenever faced with ambiguity.
 
@@ -70,7 +76,7 @@ go:<pkg>,<pkg>,<pkg>
 * NetBSD: `pkgin`/`ports`
 * SmartOS/Illumos: `pkgin`
 * Windows: `apt-cyg`/`mingw-get`/`nuget`/`Windows Update`/(as-yet-not-created package manager, "winget")
-* Wine: `winetricks`
+* Wine/Proton/Steam: `winetricks`/`steam`
 * Ruby: `rubygems`
 * Python: `pip`/`easy_install`
 * Javascript/NodeJS: `npm`
