@@ -12,7 +12,7 @@ Wraps all known package managers to provide a consistent and pretty interface, a
 
 All tools will give you modern, pretty, colourful, piped-to-less output, and you'll only have to remember one consistent set of commands. It'll also prompt you with a text UI whenever faced with ambiguity.
 
-You can maintain lists of your favorite packages (and sync them to some remote server), so that they can automatically install them whenever they setup a new machine. (This can include git repos full of dotfiles/scripts, to give the user a comfortable home environment regardless of which OS they're using.)
+You can maintain lists of your favorite packages (and sync them to some remote server), so that you can automatically install them whenever you setup a new machine. (This can include git repos full of dotfiles/scripts, to give you a comfortable home environment, regardless of which OS you're using.)
 
 ## Installation:
 
