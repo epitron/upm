@@ -167,3 +167,4 @@ In the future, these could be wrapped by `ucm` (Universal Container Manager), if
 ## Similar Projects
 
 * [PackageKit](https://en.wikipedia.org/wiki/PackageKit)
+* [libraries.io](https://libraries.io)
