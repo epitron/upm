@@ -11,14 +11,35 @@ UPM::Tool.new "pkg" do
   command "audit",   "pkg audit",   root: true
   command "verify",  "pkg check --checksums", root: true
 
-  command "files",   "pkg list",    paged: true
+  # command "files",   "pkg list",    paged: true
+  command "files" do |*args|
+    if args.empty?
+      run "pkg", "info", "--list-files", "--all", paged: true
+    else
+      run "pkg", "list", *args, paged: true
+    end
+  end
+
+  command "provides" do |*args|
+    run "pkg", "info", "--list-files", "--all", grep: paged: true
+  end
+
   command "search",  "pkg search",  paged: true, highlight: true
   command "search-sources" do |*args|
     query = args.join(" ")
     FreshportsSearch.new.search!(query)
   end
 
-  command "log", "grep pkg: /var/log/messages", paged: true
+  # command "log", "grep -E 'pkg.+installed' /var/log/messages", paged: true
+  command "log", do
+    lesspipe do |less|
+      open("/var/log/messages").each_line do |line|
+        if line =~ /pkg(.+)installed/
+          less.puts $1
+        end
+      end
+    end
+  end
 
   command "build" do |*args|
     # svn checkout --depth empty svn://svn.freebsd.org/ports/head /usr/ports
