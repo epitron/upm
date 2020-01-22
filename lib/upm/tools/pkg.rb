@@ -7,12 +7,14 @@ UPM::Tool.new "pkg" do
   command "install", "pkg install", root: true
   command "update",  "pkg update",  root: true
   command "upgrade", "pkg upgrade", root: true
+  command "remove",  "pkg remove", root: true
   command "info",    "pkg clean",   root: true
   command "audit",   "pkg audit",   root: true
   command "verify",  "pkg check --checksums", root: true
+  command "which",   "pkg which"
 
   # command "files",   "pkg list",    paged: true
-  command "files" do |*args|
+  command "files" do |args|
     if args.empty?
       run "pkg", "info", "--list-files", "--all", paged: true
     else
@@ -20,8 +22,9 @@ UPM::Tool.new "pkg" do
     end
   end
 
-  command "provides" do |*args|
-    run "pkg", "info", "--list-files", "--all", grep: paged: true
+  # the "pkg-provides" plugin is similar to arch's "pkgfile" (requires updates), and needs to be added to the plugins section of pkg's config ("pkg plugins" shows loaded plugins)
+  command "provides" do |args|
+    run "pkg", "info", "--list-files", "--all", grep: /#{args.join(".+")}/, highlight: true
   end
 
   command "search",  "pkg search",  paged: true, highlight: true
@@ -31,11 +34,16 @@ UPM::Tool.new "pkg" do
   end
 
   # command "log", "grep -E 'pkg.+installed' /var/log/messages", paged: true
-  command "log", do
+  command "log" do
     lesspipe do |less|
       open("/var/log/messages").each_line do |line|
-        if line =~ /pkg(.+)installed/
-          less.puts $1
+        # Jan 19 18:25:21 freebsd pkg[815]: pcre-8.43_2 installed
+        if line =~ /^(\S+ \S+ \S+) (\S+) pkg(?:\[\d+\])?: (\S+)-(\S+) installed/
+          timestamp = DateTime.parse($1)
+          host = $2
+          pkgname = $3
+          pkgver = $4
+          less.puts "#{timestamp} | #{pkgname} #{pkgver}"
         end
       end
     end
