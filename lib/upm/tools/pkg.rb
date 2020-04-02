@@ -7,7 +7,6 @@ UPM::Tool.new "pkg" do
   command "install", "pkg install", root: true
   command "update",  "pkg update",  root: true
   command "upgrade", "pkg upgrade", root: true
-  command "info",    "pkg clean",   root: true
   command "audit",   "pkg audit",   root: true
   command "verify",  "pkg check --checksums", root: true
 
@@ -47,5 +46,12 @@ UPM::Tool.new "pkg" do
   command "mirrors" do
     print_files("/etc/pkg/FreeBSD.conf", exclude: /^(#|$)/)
   end
+
+  # pkg clean # cleans /var/cache/pkg/
+  # rm -rf /var/cache/pkg/* # just remove it all
+  # pkg update -f # forces update  of repository catalog
+  # rm /var/db/pkg/repo-*.sqlite # removes all remote repository catalogs
+  # pkg bootstrap -f # forces reinstall of pkg
+  command "clean",   "pkg clean",   root: true
 
 end
