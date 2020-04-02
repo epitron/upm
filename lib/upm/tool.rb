@@ -16,6 +16,8 @@ module UPM
 
     include UPM::Tool::DSL
 
+    # TODO: Show unlisted commands
+
     COMMAND_HELP = {
       "install"          => "install a package",
       "remove/uninstall" => "remove a package",
@@ -23,6 +25,7 @@ module UPM
       "search-sources"   => "search package source (for use with 'build' command)",
       "build"            => "build a package from source and install it",
       "list"             => "list installed packages (or search their names if extra arguments are supplied)",
+      "files"            => "list files in a package",
       "info"             => "show metadata about a package",
       "update/sync"      => "retrieve the latest package list or manifest",
       "upgrade"          => "update package list and install updates",
