@@ -1,5 +1,3 @@
-require 'upm/freshports_search'
-
 UPM::Tool.new "pkg" do
 
   os "FreeBSD"
@@ -29,16 +27,19 @@ UPM::Tool.new "pkg" do
 
   command "search",  "pkg search",  paged: true, highlight: true
   command "search-sources" do |*args|
+   require 'upm/freshports_search'
     query = args.join(" ")
     FreshportsSearch.new.search!(query)
   end
 
   # command "log", "grep -E 'pkg.+installed' /var/log/messages", paged: true
   command "log" do
+    require 'upm/core_ext/file'
     lesspipe do |less|
-      open("/var/log/messages").each_line do |line|
+      open("/var/log/messages").reverse_each_line do |line|
         # Jan 19 18:25:21 freebsd pkg[815]: pcre-8.43_2 installed
-        if line =~ /^(\S+ \S+ \S+) (\S+) pkg(?:\[\d+\])?: (\S+)-(\S+) installed/
+        # Apr  1 16:55:58 freebsd pkg[73957]: irssi-1.2.2,1 installed
+        if line =~ /^(\S+\s+\S+\s+\S+) (\S+) pkg(?:\[\d+\])?: (\S+)-(\S+) installed/
           timestamp = DateTime.parse($1)
           host = $2
           pkgname = $3
