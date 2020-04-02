@@ -7,6 +7,7 @@ UPM::Tool.new "pkg" do
   command "upgrade", "pkg upgrade", root: true
   command "remove",  "pkg remove", root: true
   command "audit",   "pkg audit",   root: true
+  command "clean",   "pkg clean",   root: true
   command "verify",  "pkg check --checksums", root: true
   command "which",   "pkg which"
 
@@ -82,6 +83,5 @@ UPM::Tool.new "pkg" do
   # pkg update -f # forces update  of repository catalog
   # rm /var/db/pkg/repo-*.sqlite # removes all remote repository catalogs
   # pkg bootstrap -f # forces reinstall of pkg
-  command "clean",   "pkg clean",   root: true
 
 end
