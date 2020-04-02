@@ -92,6 +92,7 @@ go:<pkg>,<pkg>,<pkg>
 * Dart: `pub`
 * go: `go-get`
 * R: `cran`
+* Qt: `qpm`
 * Lua: `rocks`
 * Julia: `Pkg`
 * Haskell: `cabal`

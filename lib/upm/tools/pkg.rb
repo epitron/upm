@@ -1,5 +1,3 @@
-require 'upm/freshports_search'
-
 UPM::Tool.new "pkg" do
 
   os "FreeBSD"
@@ -7,17 +5,49 @@ UPM::Tool.new "pkg" do
   command "install", "pkg install", root: true
   command "update",  "pkg update",  root: true
   command "upgrade", "pkg upgrade", root: true
+  command "remove",  "pkg remove", root: true
   command "audit",   "pkg audit",   root: true
   command "verify",  "pkg check --checksums", root: true
+  command "which",   "pkg which"
 
-  command "files",   "pkg list",    paged: true
+  # command "files",   "pkg list",    paged: true
+  command "files" do |args|
+    if args.empty?
+      run "pkg", "info", "--list-files", "--all", paged: true
+    else
+      run "pkg", "list", *args, paged: true
+    end
+  end
+
+  # the "pkg-provides" plugin is similar to arch's "pkgfile" (requires updates), and needs to be added to the plugins section of pkg's config ("pkg plugins" shows loaded plugins)
+  command "provides" do |args|
+    run "pkg", "info", "--list-files", "--all", grep: /#{args.join(".+")}/, highlight: true
+  end
+
   command "search",  "pkg search",  paged: true, highlight: true
   command "search-sources" do |*args|
+   require 'upm/freshports_search'
     query = args.join(" ")
     FreshportsSearch.new.search!(query)
   end
 
-  command "log", "grep pkg: /var/log/messages", paged: true
+  # command "log", "grep -E 'pkg.+installed' /var/log/messages", paged: true
+  command "log" do
+    require 'upm/core_ext/file'
+    lesspipe do |less|
+      open("/var/log/messages").reverse_each_line do |line|
+        # Jan 19 18:25:21 freebsd pkg[815]: pcre-8.43_2 installed
+        # Apr  1 16:55:58 freebsd pkg[73957]: irssi-1.2.2,1 installed
+        if line =~ /^(\S+\s+\S+\s+\S+) (\S+) pkg(?:\[\d+\])?: (\S+)-(\S+) installed/
+          timestamp = DateTime.parse($1)
+          host = $2
+          pkgname = $3
+          pkgver = $4
+          less.puts "#{timestamp} | #{pkgname} #{pkgver}"
+        end
+      end
+    end
+  end
 
   command "build" do |*args|
     # svn checkout --depth empty svn://svn.freebsd.org/ports/head /usr/ports
