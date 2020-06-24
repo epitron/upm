@@ -2,7 +2,7 @@
 
 ## Performance
 
-It's currently very clunky on the rpi2.
+It's very clunky on embedded devices (like the RPI2).
 
 ## Custom help for command
 
@@ -23,6 +23,12 @@ spawn(*%w[echo hello world], out: w)
 spawn(*%w[tr a-z A-Z], in: r)
 ```
 
+## User mode (install to home directory)
+
+If running as a regular user, upm should install/build everything to the user's home directory.
+
+Since `nix` is a great {distro,platform}-agnostic way to do that, let's use it!
+
 ## More package managers
 
 Currently missing:
@@ -40,8 +46,7 @@ Currently missing:
 
 ## Ability to install any package from any OS to the user's home directory
 
-Slurps up the packages and their dependencies, then unpacks them into ~/.upm/{bin,lib} or something.
-(Like nix?)
+Slurps up the packages and their dependencies, then unpacks them into \~/.upm/{bin,lib} or something. (Like nix?)
 
 Related tool: intoli/exodus
 
@@ -60,13 +65,13 @@ Use fzf for "list" output (or other commands that require selecting, like "remov
 
 * The packages that you can get through gem/pip/luarocks/etc. are often duplicated in the OS-level package managers. Should there be a preference?
 * Should the search command show matches from all available package tools? (There could be a configure step where the user says which package managers should be included, and which have preference)
-* Possibilites: 
+* Possibilites:
     * upm install --ruby <pkg>
     * upm install ruby:<pkg>,<pkg>
     * upm --ruby search <query>
     * upm ruby:search <query>
     * upm search os:<query>
-    * Separate tool: `lpm search <query>` searches only language packages 
+    * Separate tool: `lpm search <query>` searches only language packages
 * Add detectors for language-specific package-managers
 * Help screen needs to display language-specific package managers
 * `upm help --ruby` should show available ruby commands

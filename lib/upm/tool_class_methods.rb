@@ -24,14 +24,14 @@ module UPM
         if os_release
           os_release.values_at("ID", "ID_LIKE").compact
         else
-          # `uname -s` => Darwin|FreeBSD|OpenBSD
-          # `uname -o` => Android|Cygwin
+          # `uname -s` => Darwin|FreeBSD|OpenBSD|SunOS
+          # `uname -o` => Android|Cygwin|illumos
           [`uname -s`, `uname -o`].map(&:chomp).uniq
         end
       end
 
       def nice_os_name
-        os_release.values_at("PRETTY_NAME", "NAME", "ID", "ID_LIKE").first || 
+        os_release.values_at("PRETTY_NAME", "NAME", "ID", "ID_LIKE").first ||
           (`uname -o`.chomp rescue nil)
       end
 

@@ -147,10 +147,16 @@ module UPM
         puts "Package manager: #{@name}"
         puts
         puts "Available commands:"
-        available = COMMAND_HELP.select do |name, desc|
-          names = name.split("/")
-          names.any? { |name| @cmds[name] }
+
+        # split_names = COMMAND_HELP.keys.map { |key| key.split("/").map { |n| [n, key] } }.flatten
+        available = @cmds.map do |name, proc|
+          [name, COMMAND_HELP[name]]
         end
+
+        # available = COMMAND_HELP.select do |name, desc|
+        #   names = name.split("/")
+        #   names.any? { |name| @cmds[name] }
+        # end
 
         max_width = available.map(&:first).map(&:size).max
         available.each do |name, desc|

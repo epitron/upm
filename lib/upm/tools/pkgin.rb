@@ -1,6 +1,14 @@
 UPM::Tool.new "pkgin" do
 
-  os "MINIX", "NetBSD"
+  os "MINIX", "NetBSD", "SunOS"
+
+  # pkgin up  Updates the pkgin database. You should run this command before installing any new packages just in case.
+  # pkgin ls  Lists all the installed packages
+  # pkgin av  Lists all of the available packages
+  # pkgin in  Installs a package
+  # pkgin rm  Removes a package
+  # pkgin se  Searches for a package
+  # pkgin With no additional arguments, lists all of the available pkgin commands.
 
   command "install", "pkgin install", root: true
   command "update",  "pkgin update",  root: true
