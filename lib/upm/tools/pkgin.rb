@@ -1,49 +1,35 @@
 UPM::Tool.new "pkgin" do
 
-  os "MINIX", "NetBSD"
+  os "MINIX", "NetBSD", "SunOS"
 
   command "install", "pkgin install", root: true
   command "update",  "pkgin update",  root: true
   command "upgrade", "pkgin upgrade", root: true
   command "info",    "pkgin clean",   root: true
-  command "audit",   "pkgin audit",   root: true
+  command "audit",   "pkg_admin fetch-pkg-vulnerabilities && pkg_admin audit", root: true, paged: true
   command "verify",  "pkgin check --checksums", root: true
 
-  command "files",   "pkgin list",    paged: true
+  command "list",    "pkgin list", paged: true
+  command "info",    "pkg_info",    paged: true
+  command "files",   "pkgin pkg-content",  paged: true
   command "search",  "pkgin search",  paged: true, highlight: true
-  command "search-sources" do |*args|
-    query = args.join(" ")
-    FreshportsSearch.new.search!(query)
-  end
-
-  command "log", "grep pkg: /var/log/messages", paged: true
-
-  command "build" do |*args|
-    # svn checkout --depth empty svn://svn.freebsd.org/ports/head /usr/ports
-    # cd /usr/ports
-    # svn update --set-depth files
-    # svn update Mk
-    # svn update Templates
-    # svn update Tools
-    # svn update --set-depth files $category
-    # cd $category
-    # svn update $port
-    puts "Not implemented"
-  end
-
-  command "info",    "pkg info",    paged: true
-
-  command "list" do |args|
-    if args.any?
-      query = args.join
-      run "pkg", "info", grep: query, highlight: query, paged: true
-    else
-      run "pkg", "info", paged: true
-    end
-  end
+  command "log",     "grep pkg: /var/log/messages", paged: true
+  command "stats",   "pkgin stats"
+  command "pinned",  "pkgin show-keep"
 
   command "mirrors" do
-    print_files("/etc/pkg/FreeBSD.conf", exclude: /^(#|$)/)
+    print_files("/opt/local/etc/pkgin/repositories.conf", exclude: /^(#|$)/)
+  end
+
+/opt/local/pkg/pkg-vulnerabilities
+
+
+  command "group" do |*args|
+    if args.any?
+      run "pkgin", "show-category", *args
+    else
+      run "pkgin", "show-all-categories"
+    end
   end
 
 end
