@@ -6,6 +6,8 @@ UPM::Tool.new "pkg" do
     if database_needs_updating?
       run "pkg", "update" 
       database_updated!
+    else
+      puts "Database has already been updated recently. Skipping."
     end
   end
 
