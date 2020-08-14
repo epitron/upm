@@ -140,6 +140,7 @@ module UPM
       end
 
       def help
+        puts "    UPM version: #{File.read("#{__dir__}/../../VERSION")}"
         if osname = Tool.nice_os_name
           puts "    Detected OS: #{osname}"
         end
