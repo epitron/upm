@@ -33,6 +33,7 @@ UPM::Tool.new "pacman" do
 
   command "mirrors" do
     print_files("/etc/pacman.d/mirrorlist", exclude: /^(#|$)/)
+    print_files("/etc/pacman.conf", include: /^Server\s*=/, exclude: /^(#|$)/)
   end
 
   command "depends" do |args|
