@@ -1,3 +1,6 @@
+require 'pathname'
+require 'fileutils'
+
 module UPM
   class Tool
     module DSL
@@ -11,6 +14,28 @@ module UPM
 
       def prefix(name)
         @prefix = name
+      end
+
+      def os(*args)
+        args.any? ? @os = args : @os
+      end
+
+      def max_database_age(age)
+        @max_database_age = age.to_i
+      end
+
+      def cache_dir(dir)
+        @cache_dir = Pathname.new(dir).expand_path
+        @cache_dir.mkpath unless @cache_dir.exist?
+      end
+
+      def config_dir(dir)
+        @config_dir = Pathname.new(dir).expand_path
+        @config_dir.mkpath unless @config_dir.exist?
+      end
+
+      def set_default(key, value)
+        send(key, value)
       end
 
       def command(name, shell_command=nil, root: false, paged: false, highlight: nil, &block)
@@ -38,14 +63,8 @@ module UPM
           end
 
         else
-
           raise "Error: Must supply a block or shell command"
-
         end
-      end
-
-      def os(*args)
-        args.any? ? @os = args : @os
       end
 
       ## Helpers
@@ -137,6 +156,28 @@ module UPM
         else
           puts "Command #{name.inspect} not supported by #{@name.inspect}"
         end
+      end
+
+      def database_lastupdate_file
+        raise "Error: Tool 'name' is not set" unless @name
+        raise "Error: 'cache_dir' is not set" unless @cache_dir
+        @cache_dir/"#{@name}-last-update"
+      end
+
+      def database_updated!
+        FileUtils.touch(database_lastupdate_file)
+      end
+
+      def database_lastupdate
+        database_lastupdate_file.exist? ? File.mtime(database_lastupdate_file) : 0
+      end
+
+      def database_age
+        Time.now.to_i - database_lastupdate.to_i
+      end
+
+      def database_needs_updating?
+        database_age > @max_database_age
       end
 
       def help

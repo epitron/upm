@@ -63,6 +63,11 @@ module UPM
 
     def initialize(name, &block)
       @name = name
+
+      set_default :cache_dir, "~/.cache/upm"
+      set_default :config_dir, "~/.cache/upm"
+      set_default :max_database_age, 15*60 # 15 minutes
+
       instance_eval(&block)
 
       @@tools[name] = self
