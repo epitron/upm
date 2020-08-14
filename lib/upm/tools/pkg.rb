@@ -2,16 +2,29 @@ UPM::Tool.new "pkg" do
 
   os "FreeBSD"
 
-  command "install", "pkg install", root: true
-  command "update",  "pkg update",  root: true
-  command "upgrade", "pkg upgrade", root: true
-  command "remove",  "pkg remove", root: true
+  command "update", root: true do
+    if database_needs_updating?
+      run "pkg", "update" 
+      database_updated!
+    end
+  end
+
+  command "install", root: true do |args|
+    call_command "update"
+    run "pkg", "install", "--no-repo-update", *args
+  end
+
+  command "upgrade", root: true do
+    call_command "update"
+    run "pkg", "upgrade", "--no-repo-update"
+  end
+
+  command "remove",  "pkg remove",  root: true
   command "audit",   "pkg audit",   root: true
-  command "clean",   "pkg clean",   root: true
+  command "clean",   "pkg clean -a",root: true
   command "verify",  "pkg check --checksums", root: true
   command "which",   "pkg which"
 
-  # command "files",   "pkg list",    paged: true
   command "files" do |args|
     if args.empty?
       run "pkg", "info", "--list-files", "--all", paged: true
@@ -27,7 +40,7 @@ UPM::Tool.new "pkg" do
 
   command "search",  "pkg search",  paged: true, highlight: true
   command "search-sources" do |*args|
-   require 'upm/freshports_search'
+    require 'upm/freshports_search'
     query = args.join(" ")
     FreshportsSearch.new.search!(query)
   end
