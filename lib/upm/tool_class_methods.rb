@@ -2,6 +2,11 @@ module UPM
   class Tool
     class << self
 
+      def error(message)
+        $stderr.puts message
+        exit 1
+      end
+
       def tools; @@tools; end
 
       def register_tools!
@@ -31,7 +36,7 @@ module UPM
       end
 
       def nice_os_name
-        os_release.values_at("PRETTY_NAME", "NAME", "ID", "ID_LIKE").first || 
+        os_release.values_at("PRETTY_NAME", "NAME", "ID", "ID_LIKE").first ||
           (`uname -o`.chomp rescue nil)
       end
 
