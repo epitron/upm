@@ -8,11 +8,19 @@ Wraps all known package managers to provide a consistent and pretty interface, a
 - pinning
 - fuzzy search
 - containerization/sandboxing
-- learning (community statistics and user choices)
+- learning what packages are cool (community statistics, user favorites)
 
-All tools will give you modern, pretty, colourful, piped-to-less output, and you'll only have to remember one consistent set of commands. It'll also prompt you with a text UI whenever faced with ambiguity.
+No matter what package manager you're using, you'll get a modern, pretty, colourful, output that's piped-to-less, and you only have to remember one consistent set of commands. It'll also prompt you with a text UI whenever faced with ambiguity.
 
 You can maintain lists of your favorite packages (and sync them to some remote server), so that you can automatically install them whenever you setup a new machine. (This can include git repos full of dotfiles/scripts, to give you a comfortable home environment, regardless of which OS you're using.)
+
+## Reality:
+
+Currently, `upm` provides a consistent interface to a number of tools: apk (Alpine), apt (Debian/Ubuntu), guix, opkg (OpenWRT), pacman (Arch), pkg (FreeBSD), pkg_add (OpenBSD), pkgin (Solaris/NetBSD), xbps (Void), and yum (Fedora).
+
+All the tools support the basic operations (installing, searching, listing, removing), and some support more advanced features, like grabbing search results from the web and showing the installation logs, and the output is always paged to `less`.
+
+The more advanced features, like consistent output, colorization, fuzzy filtering, etc. are not yet implemented.
 
 ## Installation:
 
@@ -149,7 +157,7 @@ In the future, these could be wrapped by `ucm` (Universal Container Manager), if
   * podman
   * nanobox
   * SmartOS zones
-  * BSD jails
+  * BSD jails (iocage)
 * Wine environments:
   * wine prefixes
   * playonlinuxs
