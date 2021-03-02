@@ -59,6 +59,7 @@ u <command> <pkg>
 * `monitor` - ad-hoc package manager for custom installations (like instmon)
 * `keys` - keyrings and package authentication
 * `default` - configure the action to take when no arguments are passed to "upm" (defaults to "os:update")
+* `switch` - set a default tool (eg: if you're on a system with both `apt-get` and `nix`, you can switch to `nix` so that you don't need to prefix every package with `nix:`)
 
 ### Any command that takes a package name can be prefixed with the package tool's namespace:
 
@@ -177,4 +178,5 @@ In the future, these could be wrapped by `ucm` (Universal Container Manager), if
 
 * [PackageKit](https://en.wikipedia.org/wiki/PackageKit)
 * [libraries.io](https://libraries.io)
+* [pkgs.org](https://pkgs.org)
 * [Repology](https://repology.org)
