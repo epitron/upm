@@ -57,7 +57,7 @@ module UPM
           tool = @@tools.find { |name, tool| File.which(tool.identifying_binary) }
         end
 
-        tool.last
+        tool&.last
       end
 
     end
