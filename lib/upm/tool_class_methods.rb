@@ -26,7 +26,9 @@ module UPM
         else
           # `uname -s` => Darwin|FreeBSD|OpenBSD
           # `uname -o` => Android|Cygwin
-          [`uname -s`, `uname -o`].map(&:chomp).uniq
+          names = [`uname -s`]
+          names << `uname -o` unless names.first =~ /OpenBSD/
+          names.map(&:chomp).uniq
         end
       end
 
