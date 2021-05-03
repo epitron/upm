@@ -29,6 +29,7 @@ module UPM
       "info"             => "show metadata about a package",
       "update/sync"      => "retrieve the latest package list or manifest",
       "upgrade"          => "update package list and install updates",
+      "selfupdate"       => "update the package manager",
       "download"         => "download package list and updates, but don't insatall them",
       "pin"              => "pinning a package means it won't be automatically upgraded",
       "rollback"         => "revert to an earlier version of a package (including its dependencies)",
