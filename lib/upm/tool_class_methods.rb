@@ -20,7 +20,7 @@ module UPM
           end
           Hash[pairs]
         rescue Errno::ENOENT
-          {}
+          nil
         end
       end
 
@@ -38,8 +38,11 @@ module UPM
       end
 
       def nice_os_name
-        os_release.values_at("PRETTY_NAME", "NAME", "ID", "ID_LIKE").first ||
-          (`uname -o`.chomp rescue nil)
+        if os_release
+          os_release.values_at("PRETTY_NAME", "NAME", "ID", "ID_LIKE").first
+        else
+          (`uname -o 2> /dev/null`.chomp rescue nil)
+        end
       end
 
       def installed
