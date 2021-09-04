@@ -1,19 +1,32 @@
-require 'upm/freshports_search'
-
 UPM::Tool.new "pkg" do
 
   os "FreeBSD"
 
-  command "install", "pkg install", root: true
-  command "update",  "pkg update",  root: true
-  command "upgrade", "pkg upgrade", root: true
-  command "remove",  "pkg remove", root: true
-  command "info",    "pkg clean",   root: true
+  command "update", root: true do
+    if database_needs_updating?
+      run "pkg", "update" 
+      database_updated!
+    else
+      puts "Database has already been updated recently. Skipping."
+    end
+  end
+
+  command "install", root: true do |args|
+    call_command "update"
+    run "pkg", "install", "--no-repo-update", *args
+  end
+
+  command "upgrade", root: true do
+    call_command "update"
+    run "pkg", "upgrade", "--no-repo-update"
+  end
+
+  command "remove",  "pkg remove",  root: true
   command "audit",   "pkg audit",   root: true
+  command "clean",   "pkg clean -a",root: true
   command "verify",  "pkg check --checksums", root: true
   command "which",   "pkg which"
 
-  # command "files",   "pkg list",    paged: true
   command "files" do |args|
     if args.empty?
       run "pkg", "info", "--list-files", "--all", paged: true
@@ -29,16 +42,19 @@ UPM::Tool.new "pkg" do
 
   command "search",  "pkg search",  paged: true, highlight: true
   command "search-sources" do |*args|
+    require 'upm/freshports_search'
     query = args.join(" ")
     FreshportsSearch.new.search!(query)
   end
 
   # command "log", "grep -E 'pkg.+installed' /var/log/messages", paged: true
   command "log" do
+    require 'upm/core_ext/file'
     lesspipe do |less|
-      open("/var/log/messages").each_line do |line|
+      open("/var/log/messages").reverse_each_line do |line|
         # Jan 19 18:25:21 freebsd pkg[815]: pcre-8.43_2 installed
-        if line =~ /^(\S+ \S+ \S+) (\S+) pkg(?:\[\d+\])?: (\S+)-(\S+) installed/
+        # Apr  1 16:55:58 freebsd pkg[73957]: irssi-1.2.2,1 installed
+        if line =~ /^(\S+\s+\S+\s+\S+) (\S+) pkg(?:\[\d+\])?: (\S+)-(\S+) installed/
           timestamp = DateTime.parse($1)
           host = $2
           pkgname = $3
@@ -76,5 +92,11 @@ UPM::Tool.new "pkg" do
   command "mirrors" do
     print_files("/etc/pkg/FreeBSD.conf", exclude: /^(#|$)/)
   end
+
+  # pkg clean # cleans /var/cache/pkg/
+  # rm -rf /var/cache/pkg/* # just remove it all
+  # pkg update -f # forces update  of repository catalog
+  # rm /var/db/pkg/repo-*.sqlite # removes all remote repository catalogs
+  # pkg bootstrap -f # forces reinstall of pkg
 
 end

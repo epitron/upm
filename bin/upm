@@ -9,13 +9,16 @@ unless tool = UPM::Tool.for_os
   exit 1
 end
 
-command, *args = ARGV
-
-if command.nil?
+if ARGV.any? { |arg| ["help", "version", "--help", "--version", "-h", "-v"].include? arg }
   tool.help
 else
-  begin
-    tool.call_command command, *args
-  rescue Interrupt
+  command, *args = ARGV
+  if command.nil?
+    tool.help
+  else
+    begin
+      tool.call_command command, *args
+    rescue Interrupt
+    end
   end
 end

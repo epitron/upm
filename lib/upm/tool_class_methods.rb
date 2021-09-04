@@ -2,6 +2,11 @@ module UPM
   class Tool
     class << self
 
+      def error(message)
+        $stderr.puts message
+        exit 1
+      end
+
       def tools; @@tools; end
 
       def register_tools!
@@ -15,7 +20,7 @@ module UPM
           end
           Hash[pairs]
         rescue Errno::ENOENT
-          {}
+          nil
         end
       end
 
@@ -26,13 +31,18 @@ module UPM
         else
           # `uname -s` => Darwin|FreeBSD|OpenBSD
           # `uname -o` => Android|Cygwin
-          [`uname -s`, `uname -o`].map(&:chomp).uniq
+          names = [`uname -s`]
+          names << `uname -o` unless names.first =~ /OpenBSD/
+          names.map(&:chomp).uniq
         end
       end
 
       def nice_os_name
-        os_release.values_at("PRETTY_NAME", "NAME", "ID", "ID_LIKE").first || 
-          (`uname -o`.chomp rescue nil)
+        if os_release
+          os_release.values_at("PRETTY_NAME", "NAME", "ID", "ID_LIKE").first
+        else
+          (`uname -o 2> /dev/null`.chomp rescue nil)
+        end
       end
 
       def installed
@@ -52,7 +62,7 @@ module UPM
           tool = @@tools.find { |name, tool| File.which(tool.identifying_binary) }
         end
 
-        tool.last
+        tool&.last
       end
 
     end
