@@ -127,6 +127,19 @@ Rollback:
 * Context-dependent operation
   * eg: if you're in a ruby project's directory, set the 'ruby' namespace to highest priority
 
+## Dotfiles
+
+* Manage and version-control dotfiles
+* Sync sqlite databases
+  * sqlitesync tool?
+
+## Themes
+
+* Font packs
+* Theme browser/downloader for GTK{2,3}, Qt, XFCE4, and Compiz
+  * Populate `~/.themes` and set ENVIRONMENT variables
+* Store/load from favorites
+
 ## Containers, VMs, and Virtual Environments:
 
 Containers, VMs, and Virtual Environments are another pile of tools which do roughly the same thing: they gather together the dependencies for a specific program, or small set of programs, into a bundle, and create an isolated environment in which it can run.
