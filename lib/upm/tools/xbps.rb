@@ -8,7 +8,7 @@ UPM::Tool.new "xbps" do
   command "update",  "xbps-install -S",   root: true
   command "upgrade", "xbps-install -Su",  root: true
   command "files",   "xbps-query -f",           paged: true
-  commmand "selection", "xbps-query", "-m"
+  command "selection", "xbps-query -m"
 
   command "search" do |args|
      query = args.join(".*")
