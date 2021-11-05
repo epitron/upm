@@ -10,6 +10,8 @@ UPM::Tool.new "xbps" do
 
   command "files",   "xbps-query -f",           paged: true
   command "search",  "xbps-query --regex -Rs",  paged: true
+
+  commmand "selection", "xbps-query", "-m"
   
   command "list" do |args|
     if args.any?

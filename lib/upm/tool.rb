@@ -25,6 +25,7 @@ module UPM
       "search-sources"   => "search package source (for use with 'build' command)",
       "build"            => "build a package from source and install it",
       "list"             => "list installed packages (or search their names if extra arguments are supplied)",
+      "selection"        => "list manually installed packages", # this should probably be a `list` option ("upm list --manually-added" or smth (would be nice: rewrite in go and use ipfs' arg parsing library))
       "files"            => "list files in a package",
       "info"             => "show metadata about a package",
       "update/sync"      => "retrieve the latest package list or manifest",
