@@ -48,6 +48,7 @@ u <command> <pkg>
 * `info` - show metadata about a package
 * `sync`/`update` - retrieve the latest package list or manifest
 * `upgrade` - install new versions of all packages
+* `sysupgrade` - upgrade the kernel, bootloader, core system, etc. (on Linux it upgrades kernel packages and dependencies, on \*BSD it upgrades the core system (essentially anything requiring a reboot))
 * `verify` - verify the integrity of installed files
 * `audit` - show known vulnerabilities for installed packages
 * `pin` - pinning a package means it won't be automatically upgraded
