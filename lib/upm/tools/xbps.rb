@@ -12,6 +12,7 @@ UPM::Tool.new "xbps" do
   command "locate",    "xlocate",           paged: true
   command "selection", "xbps-query -m",     paged: true
   command "rdeps",     "xbps-query -X",     paged: true
+  command "orphans",   "xbps-query -O",     paged: true
 
   command "info" do |args|
     args.each do |arg|
