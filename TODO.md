@@ -1,8 +1,8 @@
 # TODO
 
 ## UI
-* fzf
-* search
+* fzf/pick
+* scrapers for web-based search engines (especially for "files in packages")
 
 ## Options
 * Proper option/command parser
@@ -11,9 +11,15 @@
 ## DSL
 * Call commands from within other commands, or specify dependencies (eg: command "install", "pkg install", depends: "update" )
 * DSL setting defaults (eg: cache_dir "~/.cache/upm")
+* Some commands require special packages (eg: "command 'locate', depends: 'pkgfile'") which have their own syncable databases
+  |_ offer to install these dependencies (and sync them (periodically))
+  |_ web-based search is even nicer
+* Page multi-commands (eg: 'args.each { run ..., paged: true }' should all output to the same pager)
+  |_ 'run ..., pager: IO'? will that break grep?
 
 ## Performance
 * RPi2 is very clunky
+  |_ rewrite in... C? rust? go? lua?
 
 ## Custom help for command
 eg: command "something", help: "does stuff", root: true do ... end
