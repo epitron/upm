@@ -18,8 +18,11 @@
   |_ 'run ..., pager: IO'? will that break grep?
 
 ## Performance
-* RPi2 is very clunky
+* Make it fast as hell, even on a netbook or RPi
   |_ rewrite in... C? rust? go? lua?
+  |_ daemon? cdbm? hierarchy of sorted textfiles w/ 'look'?
+  |_ json-api centralized index of everything that runs superfast
+  |_ diffs for packages (run courgette on mirrors)
 
 ## Custom help for command
 eg: command "something", help: "does stuff", root: true do ... end
