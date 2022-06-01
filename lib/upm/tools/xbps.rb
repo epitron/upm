@@ -15,13 +15,31 @@ UPM::Tool.new "xbps" do
   command "orphans",   "xbps-query -O",     paged: true
 
   command "info" do |args|
+    require 'tty-command'
+    require 'stringio'
+    lesspipe(always: false) do |less|
+      args.each do |arg|
+#        unless run("xbps-query", "-S", arg) { |line| less.puts line }
+#          run("xbps-query", "-R", "-S", arg) { |line| less.puts line }
+#        end
+        cmd = TTY::Command.new(output: StringIO.new)
+        cmd.run(*["xbps-query", "-S", arg], pty: true).out.each_line { |line| less.puts line }
+        unless $?.success?
+          cmd.run(["xbps-query", "-R", "-S", arg], pty: true).out.each_line { |line| less.puts line }
+        end
+        less.puts
+      end
+    end
+  end
+
+=begin
     args.each do |arg|
       unless run("xbps-query", "-S", arg)
         run("xbps-query", "-R", "-S", arg)
       end
       puts
     end
-  end
+=end
 
   command "search" do |args|
      query = args.join(".*")
