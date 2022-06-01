@@ -82,6 +82,10 @@ module UPM
           end
         end
 
+        if block_given?
+          IO.popen(args, err: [:child, :out]) { |io| io.each_line { |l| yield l.chomp } }
+          return $?.success?
+        end
 
         unless paged or grep or sort
           system(*args)
@@ -124,7 +128,7 @@ module UPM
 
           end
 
-          $?.to_i == 0
+          $?.success?
         end
       end
 
