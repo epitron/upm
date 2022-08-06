@@ -194,3 +194,4 @@ In the future, these could be wrapped by `ucm` (Universal Container Manager), if
 * [libraries.io](https://libraries.io)
 * [pkgs.org](https://pkgs.org)
 * [Repology](https://repology.org)
+* [asdf](https://github.com/asdf-vm/asdf) (manages multiple language runtimes per-project (it's like gvm, nvm, rbenv & pyenv (and more) all in one (!)))
