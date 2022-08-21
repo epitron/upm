@@ -55,7 +55,7 @@ module UPM
         tool = nil
 
         if os_names.any?
-          tool = @@tools.find { |name, tool| os_names.any? { |name| tool.os.include? name } }
+          tool = @@tools.find { |name, tool| os_names.any? { |osname| tool.os&.include? osname } }
         end
 
         if tool.nil?
