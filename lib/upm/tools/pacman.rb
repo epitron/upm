@@ -1,5 +1,4 @@
 UPM::Tool.new "pacman" do
-
   os "arch"
 
   bin = ["pacman", "--color=always"]
@@ -17,6 +16,7 @@ UPM::Tool.new "pacman" do
   command "audit",  "arch-audit",  paged: true
   command "files",  [*bin, "-Ql"], paged: true
   command "search", [*bin, "-Ss"], paged: true, highlight: true
+  command "locate", ["pkgfile", "-r"], paged: true
 
   command "info" do |args|
     run(*bin, "-Qi", *args, paged: true) || run(*bin, "-Si", *args, paged: true)
@@ -106,4 +106,39 @@ UPM::Tool.new "pacman" do
 
   end
 
+  command "rdeps" do |args|
+    packages_that_depend_on = proc do |package|
+      result = []
+
+      # [`pacman -Sii #{package}`, `pacman -Qi #{package}`].each do |output|
+      [`pacman -Sii #{package}`].each do |output|
+        output.each_line do |l|
+          if l =~ /Required By\s+: (.+)/
+            result += $1.strip.split unless $1["None"]
+            break
+          end
+        end
+      end
+
+      result
+    end
+
+    args.each do |package|
+      puts "<8>=== <14>#{package} <8>============".colorize
+      puts
+
+      packages = packages_that_depend_on.call package
+
+      if packages.empty?
+        puts "  <12>None".colorize
+      else
+        run "pacman", "-Ss", "^(#{packages.join '|'})$" # upstream packages
+        run "pacman", "-Qs", "^(#{packages.join '|'})$" # packages that are only installed locally
+      end
+
+      puts
+    end
+  end
 end
+
+

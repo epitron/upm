@@ -1,8 +1,8 @@
 # TODO
 
 ## UI
-* fzf
-* search
+* fzf/pick
+* scrapers for web-based search engines (especially for "files in packages")
 
 ## Options
 * Proper option/command parser
@@ -10,10 +10,21 @@
 
 ## DSL
 * Call commands from within other commands, or specify dependencies (eg: command "install", "pkg install", depends: "update" )
-* DSL setting defaults (eg: cache_dir "~/.cache/upm")
+* DSL setting defaults (eg: cache_dir "\~/.cache/upm")
+* Some commands require special packages (eg: "command 'locate', depends: 'pkgfile'") which have their own syncable databases
+  |_ offer to install these dependencies (and sync them (periodically))
+  |_ web-based search is even nicer
+* Page multi-commands (eg: 'args.each { run ..., paged: true }' should all output to the same pager)
+  |_ 'run ..., pager: IO'? will that break grep?
 
 ## Performance
 * RPi2 is very clunky
+  |_ rewrite in... C? rust? go? lua?
+
+## A language for letting programs specify and auto-install dependencies
+* A DSL for specifying dependencies (eg: `upm py:spotdl rb:epitools pkg:wget docker:aria2c`)
+* Language bindings (Ruby, Python, etc.)
+* Allow the CLI tool to do the same (for bash and unsupported languages)
 
 ## Custom help for command
 eg: command "something", help: "does stuff", root: true do ... end
@@ -62,13 +73,13 @@ Use fzf for "list" output (or other commands that require selecting, like "remov
 ## Figure out how to integrate language package managers
 * The packages that you can get through gem/pip/luarocks/etc. are often duplicated in the OS-level package managers. Should there be a preference?
 * Should the search command show matches from all available package tools? (There could be a configure step where the user says which package managers should be included, and which have preference)
-* Possibilites: 
+* Possibilites:
     * upm install --ruby <pkg>
     * upm install ruby:<pkg>,<pkg>
     * upm --ruby search <query>
     * upm ruby:search <query>
     * upm search os:<query>
-    * Separate tool: `lpm search <query>` searches only language packages 
+    * Separate tool: `lpm search <query>` searches only language packages
 * Add detectors for language-specific package-managers
 * Help screen needs to display language-specific package managers
 * `upm help --ruby` should show available ruby commands

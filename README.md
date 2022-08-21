@@ -48,6 +48,7 @@ u <command> <pkg>
 * `info` - show metadata about a package
 * `sync`/`update` - retrieve the latest package list or manifest
 * `upgrade` - install new versions of all packages
+* `sysupgrade` - upgrade the kernel, bootloader, core system, etc. (on Linux it upgrades kernel packages and dependencies, on \*BSD it upgrades the core system (essentially anything requiring a reboot))
 * `verify` - verify the integrity of installed files
 * `audit` - show known vulnerabilities for installed packages
 * `pin` - pinning a package means it won't be automatically upgraded
@@ -136,6 +137,19 @@ Rollback:
 * Context-dependent operation
   * eg: if you're in a ruby project's directory, set the 'ruby' namespace to highest priority
 
+## Dotfiles
+
+* Manage and version-control dotfiles
+* Sync sqlite databases
+  * sqlitesync tool?
+
+## Themes
+
+* Font packs
+* Theme browser/downloader for GTK{2,3}, Qt, XFCE4, and Compiz
+  * Populate `~/.themes` and set ENVIRONMENT variables
+* Store/load from favorites
+
 ## Containers, VMs, and Virtual Environments:
 
 Containers, VMs, and Virtual Environments are another pile of tools which do roughly the same thing: they gather together the dependencies for a specific program, or small set of programs, into a bundle, and create an isolated environment in which it can run.
@@ -180,3 +194,4 @@ In the future, these could be wrapped by `ucm` (Universal Container Manager), if
 * [libraries.io](https://libraries.io)
 * [pkgs.org](https://pkgs.org)
 * [Repology](https://repology.org)
+* [asdf](https://github.com/asdf-vm/asdf) (manages multiple language runtimes per-project (it's like gvm, nvm, rbenv & pyenv (and more) all in one (!)))
