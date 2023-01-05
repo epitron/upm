@@ -13,6 +13,7 @@ UPM::Tool.new "xbps" do
   command "selection", "xbps-query -m",     paged: true
   command "rdeps",     "xbps-query -R -X",  paged: true
   command "orphans",   "xbps-query -O",     paged: true
+  command "repos",     "xbps-query -L",     paged: true
 
   command "info" do |args|
     args.each do |arg|
