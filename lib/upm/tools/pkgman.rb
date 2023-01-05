@@ -2,17 +2,17 @@ UPM::Tool.new "pkgman" do
 
   os "Haiku"
 
-  def hpkg_dir
-    Pathname.new("/system/packages")
-  end
-
   def installed_packages
     Pathname.new("/packages").each_child.map { |dir| dir.basename.to_s }
   end
 
+  def hpkg_dir
+    Pathname.new("/system/packages")
+  end
+
   def hpkg_file(name)
     r = hpkg_dir.glob("#{name}-*.hpkg").sort
-    p r
+    # p r
     r.last
   end
 
@@ -30,11 +30,11 @@ UPM::Tool.new "pkgman" do
   end
 
   command "info" do |args|
-    args.each { |arg| run("package", "info", hpkg_file(arg).to_s, paged: true) }
+    args.each { |arg| run("package", "list", "-i", hpkg_file(arg).to_s, paged: true) }
   end
 
   command "files" do |args|
-    args.each { |arg| run("package", "list", hpkg_file(arg).to_s, paged: true) }
+    args.each { |arg| run("package", "list", "-p", hpkg_file(arg).to_s, paged: true) }
   end
 
   command "list" do |args|
