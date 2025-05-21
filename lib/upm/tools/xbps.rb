@@ -80,7 +80,7 @@ UPM::Tool.new "xbps" do
       XBPSPackage.from_line(line.strip)
     end.compact
     packages.sort_by!(&:date)
-    packages.each { |pkg| puts pkg }
+    lesspipe(tail: true) { |less| packages.each { |pkg| less.puts pkg } }
   end
 end
     
