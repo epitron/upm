@@ -47,6 +47,7 @@ module UPM
       "keys"             => "keyrings and package authentication",
       "default"          => "configure the action to take when no arguments are passed to 'upm' (defaults to 'os:update')",
       "stats"            => "show statistics about package database(s)",
+      "rosetta"          => "show a table translations between all upm commands and equivalent the package manager commands",
       "repos/mirrors/sources/channels" => "manage subscriptions to remote repositories/mirrors/channels",
     }
 

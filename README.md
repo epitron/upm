@@ -61,6 +61,7 @@ u <command> <pkg>
 * `keys` - keyrings and package authentication
 * `default` - configure the action to take when no arguments are passed to "upm" (defaults to "os:update")
 * `switch` - set a default tool (eg: if you're on a system with both `apt-get` and `nix`, you can switch to `nix` so that you don't need to prefix every package with `nix:`)
+* `backup` - interactively backup package selections, system-wide configurations, and user configurations
 
 ### Any command that takes a package name can be prefixed with the package tool's namespace:
 

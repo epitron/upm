@@ -39,6 +39,7 @@ module UPM
       end
 
       def command(name, shell_command=nil, root: false, paged: false, highlight: nil, &block)
+
         @cmds ||= {}
 
         if block_given?
