@@ -196,3 +196,4 @@ In the future, these could be wrapped by `ucm` (Universal Container Manager), if
 * [pkgs.org](https://pkgs.org)
 * [Repology](https://repology.org)
 * [asdf](https://github.com/asdf-vm/asdf) (manages multiple language runtimes per-project (it's like gvm, nvm, rbenv & pyenv (and more) all in one (!)))
+* [mise-en-place](https://mise.jdx.dev/dev-tools/) (a development environment setup tool for many languages, just like asdf but perhaps more popular)
